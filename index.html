@@ -1839,15 +1839,15 @@
 
             function getLocalState() {
                 try {
-                    const stored = localStorage.getItem('tlr_state_v2');
+                    const stored = localStorage.getItem('tlr_state_v3');
                     if (stored) return JSON.parse(stored);
                 } catch (_) {}
-                return { messi: 0, ronaldo: 0, hasVoted: false, backedCandidate: null };
+                return null;
             }
 
             function saveLocalState(st) {
                 try {
-                    localStorage.setItem('tlr_state_v2', JSON.stringify({
+                    localStorage.setItem('tlr_state_v3', JSON.stringify({
                         messi: vault.messiCount,
                         ronaldo: vault.ronaldoCount,
                         hasVoted: vault.hasVoted,
@@ -1908,8 +1908,8 @@
                 restoreLocalVoterState();
                 const local = getLocalState();
                 if (local) {
-                    if (typeof local.messi === 'number') vault.messiCount = Math.max(vault.messiCount, local.messi);
-                    if (typeof local.ronaldo === 'number') vault.ronaldoCount = Math.max(vault.ronaldoCount, local.ronaldo);
+                    if (typeof local.messi === 'number') vault.messiCount = local.messi;
+                    if (typeof local.ronaldo === 'number') vault.ronaldoCount = local.ronaldo;
                     if (local.hasVoted) {
                         vault.hasVoted = true;
                         if (local.backedCandidate) vault.backedCandidate = local.backedCandidate;
@@ -1955,11 +1955,11 @@
 
                         let changed = false;
                         if (typeof data.messi === 'number' && data.messi !== vault.messiCount) {
-                            vault.messiCount = Math.max(vault.messiCount, data.messi);
+                            vault.messiCount = data.messi;
                             changed = true;
                         }
                         if (typeof data.ronaldo === 'number' && data.ronaldo !== vault.ronaldoCount) {
-                            vault.ronaldoCount = Math.max(vault.ronaldoCount, data.ronaldo);
+                            vault.ronaldoCount = data.ronaldo;
                             changed = true;
                         }
                         if (data.hasVoted) {
@@ -2218,10 +2218,10 @@
                         throw new Error(voteData.error || 'Server rejected vote.');
                     }
 
-                    // Authoritative tally update with optimistic fallback
+                    // Authoritative tally update with fallback
                     if (typeof voteData.messi === 'number' && typeof voteData.ronaldo === 'number') {
-                        vault.messiCount = Math.max(vault.messiCount + (candidate === 'messi' ? 1 : 0), voteData.messi);
-                        vault.ronaldoCount = Math.max(vault.ronaldoCount + (candidate === 'ronaldo' ? 1 : 0), voteData.ronaldo);
+                        vault.messiCount = voteData.messi;
+                        vault.ronaldoCount = voteData.ronaldo;
                     } else {
                         if (candidate === 'messi') vault.messiCount++;
                         if (candidate === 'ronaldo') vault.ronaldoCount++;

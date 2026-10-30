@@ -102,10 +102,15 @@ async function refreshGlobalState() {
         saveDb();
       }
       cachedGlobalState = {
-        messi: Math.max(db.counts.messi, messi),
-        ronaldo: Math.max(db.counts.ronaldo, ronaldo),
+        messi: hasKV ? messi : Math.max(db.counts.messi, messi),
+        ronaldo: hasKV ? ronaldo : Math.max(db.counts.ronaldo, ronaldo),
         recentBallots: ballots.length ? ballots : (db.recentBallots || [])
       };
+      if (hasKV) {
+        db.counts.messi = messi;
+        db.counts.ronaldo = ronaldo;
+        saveDb();
+      }
       lastGlobalFetch = Date.now();
     }
   } catch (_) {}
@@ -238,8 +243,8 @@ async function getStateAsync(ipKey, deviceId) {
   const voterStatus = await checkVoterStatusAsync(ipKey, deviceId);
 
   return {
-    messi: Math.max(db.counts.messi, cachedGlobalState.messi || 0),
-    ronaldo: Math.max(db.counts.ronaldo, cachedGlobalState.ronaldo || 0),
+    messi: hasKV ? (cachedGlobalState.messi !== undefined ? cachedGlobalState.messi : db.counts.messi) : (db.counts.messi || 0),
+    ronaldo: hasKV ? (cachedGlobalState.ronaldo !== undefined ? cachedGlobalState.ronaldo : db.counts.ronaldo) : (db.counts.ronaldo || 0),
     hasVoted: voterStatus.hasVoted,
     backedCandidate: voterStatus.backedCandidate,
     deadlineMs: db.deadlineMs,
