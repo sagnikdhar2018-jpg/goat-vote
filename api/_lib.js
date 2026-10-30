@@ -121,21 +121,51 @@ async function refreshGlobalState() {
 // Initial warm-up
 refreshGlobalState().catch(() => {});
 
-// STRICT ONE-VOTE LIFETIME CHECK
+// High-speed voter status cache (eliminates multi-second Redis roundtrips on repeated polls)
+const voterStatusCache = new Map();
+const MAX_VOTER_CACHE = 20000;
+
+function getCachedVoter(ipKey, deviceId) {
+  const key = (ipKey || '') + ':' + (deviceId || '');
+  const entry = voterStatusCache.get(key);
+  if (entry && Date.now() < entry.exp) {
+    return entry.val;
+  }
+  return null;
+}
+
+function setCachedVoter(ipKey, deviceId, val, ttlMs = 45000) {
+  if (voterStatusCache.size > MAX_VOTER_CACHE) {
+    const iter = voterStatusCache.keys();
+    for (let i = 0; i < 1000; i++) voterStatusCache.delete(iter.next().value);
+  }
+  const key = (ipKey || '') + ':' + (deviceId || '');
+  voterStatusCache.set(key, { val, exp: Date.now() + ttlMs });
+}
+
+// STRICT ONE-VOTE LIFETIME CHECK (OPTIMIZED FOR ULTRA-LOW LATENCY)
 async function checkVoterStatusAsync(ipKey, deviceId) {
   loadDb();
 
-  // 1. Fast local check
+  // 1. Instant RAM cache check (<0.02ms)
+  const cached = getCachedVoter(ipKey, deviceId);
+  if (cached) return cached;
+
+  // 2. Fast local disk/memory check
   if (ipKey && db.voters && db.voters[ipKey]) {
     const v = db.voters[ipKey];
-    return { hasVoted: true, backedCandidate: typeof v === 'object' ? v.choice : v };
+    const res = { hasVoted: true, backedCandidate: typeof v === 'object' ? v.choice : v };
+    setCachedVoter(ipKey, deviceId, res, 24 * 3600 * 1000);
+    return res;
   }
   if (deviceId && db.devices && db.devices[deviceId]) {
     const d = db.devices[deviceId];
-    return { hasVoted: true, backedCandidate: typeof d === 'object' ? d.choice : d };
+    const res = { hasVoted: true, backedCandidate: typeof d === 'object' ? d.choice : d };
+    setCachedVoter(ipKey, deviceId, res, 24 * 3600 * 1000);
+    return res;
   }
 
-  // 2. Global persistent store check (Upstash Redis)
+  // 3. Global persistent store check (Upstash Redis)
   if (hasKV) {
     try {
       const base = kvUrl.replace(/\/+$/, '');
@@ -149,7 +179,7 @@ async function checkVoterStatusAsync(ipKey, deviceId) {
           method: 'POST',
           headers,
           body: JSON.stringify(pipeline),
-          signal: AbortSignal.timeout(1800)
+          signal: AbortSignal.timeout(1200)
         });
 
         if (res.ok) {
@@ -162,17 +192,21 @@ async function checkVoterStatusAsync(ipKey, deviceId) {
             }
           }
           if (choice) {
-            // Cache locally in memory for instant subsequent lookups
             if (ipKey) db.voters[ipKey] = choice;
             if (deviceId) db.devices[deviceId] = choice;
-            return { hasVoted: true, backedCandidate: choice };
+            const resObj = { hasVoted: true, backedCandidate: choice };
+            setCachedVoter(ipKey, deviceId, resObj, 24 * 3600 * 1000);
+            return resObj;
           }
         }
       }
     } catch (_) {}
   }
 
-  return { hasVoted: false, backedCandidate: null };
+  // Negative result cached for 45 seconds so subsequent polls return in <1ms
+  const unvoted = { hasVoted: false, backedCandidate: null };
+  setCachedVoter(ipKey, deviceId, unvoted, 45000);
+  return unvoted;
 }
 
 // ATOMIC PERMANENT VOTE RECORDING
@@ -196,6 +230,7 @@ async function recordVoteAsync(ipKey, deviceId, choice, nonce) {
   // Instant local memory update
   cachedGlobalState[choice] = (cachedGlobalState[choice] || 0) + 1;
   cachedGlobalState.recentBallots = [ballot, ...(cachedGlobalState.recentBallots || [])].slice(0, 10);
+  setCachedVoter(ipKey, deviceId, { hasVoted: true, backedCandidate: choice }, 24 * 3600 * 1000);
 
   // Permanent atomic commit in Upstash Redis
   if (hasKV) {
@@ -242,9 +277,17 @@ async function getStateAsync(ipKey, deviceId) {
 
   const voterStatus = await checkVoterStatusAsync(ipKey, deviceId);
 
+  const finalMessi = (lastGlobalFetch > 0 && cachedGlobalState.messi !== undefined)
+    ? cachedGlobalState.messi
+    : (db.counts.messi || cachedGlobalState.messi || 0);
+
+  const finalRonaldo = (lastGlobalFetch > 0 && cachedGlobalState.ronaldo !== undefined)
+    ? cachedGlobalState.ronaldo
+    : (db.counts.ronaldo || cachedGlobalState.ronaldo || 0);
+
   return {
-    messi: hasKV ? (cachedGlobalState.messi !== undefined ? cachedGlobalState.messi : db.counts.messi) : (db.counts.messi || 0),
-    ronaldo: hasKV ? (cachedGlobalState.ronaldo !== undefined ? cachedGlobalState.ronaldo : db.counts.ronaldo) : (db.counts.ronaldo || 0),
+    messi: finalMessi,
+    ronaldo: finalRonaldo,
     hasVoted: voterStatus.hasVoted,
     backedCandidate: voterStatus.backedCandidate,
     deadlineMs: db.deadlineMs,

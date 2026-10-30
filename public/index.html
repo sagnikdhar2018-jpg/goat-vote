@@ -25,16 +25,20 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts: Cinzel, Syne, Plus Jakarta Sans & JetBrains Mono -->
+    <!-- Performance Optimization: Resource Hints -->
+    <link rel="dns-prefetch" href="https://classic-calf-243852.upstash.io">
+    <link rel="dns-prefetch" href="https://upload.wikimedia.org">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Canvas Confetti for Celebratory Ballot Sealing -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <!-- Canvas Confetti (Deferred to avoid blocking DOM rendering) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -1919,9 +1923,9 @@
                 renderVoterStatusUI();
                 renderTenDayDeadlineClock();
 
-                // 2. Sync with high-speed production ledger
+                // 2. Sync with high-speed production ledger (non-blocking)
                 vault.backendType = 'node';
-                await pollNodeState();
+                pollNodeState().catch(() => {});
 
                 // 3. High-concurrency adaptive synchronization with jitter & background tab backoff
                 function schedulePoll(delayMs) {
