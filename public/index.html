@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE TOUCHLINE REFERENDUM | Lionel Messi vs. Cristiano Ronaldo — Official Public Poll</title>
+    
+    <!-- SEO & Open Graph Metadata -->
+    <meta name="description" content="The definitive, unfiltered global football ballot. Vote between Lionel Messi and Cristiano Ronaldo in The Touchline Referendum. Zero bots, 4-hour cooldown, 9-day official window.">
+    <meta name="keywords" content="Messi vs Ronaldo, GOAT vote counter, Ballon d'Or, Football poll, Touchline Referendum, Messi, Ronaldo, CR7">
+    <meta property="og:title" content="THE TOUCHLINE REFERENDUM | Lionel Messi vs. Cristiano Ronaldo">
+    <meta property="og:description" content="Cast your official verified public ballot in the Messi vs Ronaldo GOAT referendum. No PR lobbies, no bots. Live 9-day public poll.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="THE TOUCHLINE REFERENDUM | Messi vs. Ronaldo GOAT Poll">
+    <meta name="twitter:description" content="The people's verdict on the greatest of all time. Cast your verified ballot now.">
+    <meta name="theme-color" content="#06070a">
+
+    <!-- Favicon (Gold Trophy SVG) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3E%3Cpath d='M19 4h-3V2H8v2H5c-1.1 0-2 .9-2 2v2c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 16.9V19H8v2h8v-2h-3v-2.1c1.94-.37 3.5-1.92 3.61-3.96C19.08 12.63 21 10.55 21 8V6c0-1.1-.9-2-2-2zM5 8V6h3v4.93C6.07 10.45 5 9.35 5 8zm14 0c0 1.35-1.07 2.45-3 2.93V6h3v2z'/%3E%3C/svg%3E">
+
+    <!-- Note on Subresource Integrity (SRI): In strict enterprise environments, consider adding integrity hashes for external CDN scripts. CDN links are preserved as standard CDN endpoints here for compatibility with standalone deployments. -->
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Cinzel, Syne, Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Canvas Confetti for Celebratory Ballot Sealing -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        display: ['Syne', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#06070a',
+                        charcoal: '#0d1017',
+                        gold: {
+                            light: '#fde68a',
+                            DEFAULT: '#d4af37',
+                            dark: '#9a7b1c'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        /* A11Y: Prefers-reduced-motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Editorial Asymmetric Dual Split Background */
+        body {
+            background-color: #06070a;
+            background-image:
+                linear-gradient(135deg, rgba(14, 116, 144, 0.16) 0%, rgba(6, 7, 10, 0.96) 42%, rgba(6, 7, 10, 0.96) 58%, rgba(190, 18, 60, 0.16) 100%),
+                radial-gradient(ellipse 70% 35% at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 65%);
+            background-attachment: fixed;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .editorial-card {
+            background: linear-gradient(180deg, rgba(16, 20, 29, 0.94) 0%, rgba(9, 11, 16, 0.98) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .gold-border-glow {
+            border: 1px solid rgba(212, 175, 55, 0.32);
+            box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.9), 0 0 35px -12px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Contender Luxury Cards with Dual-Layer Glow (Atmospheric Box-Shadow) */
+        .messi-card-luxury {
+            background: linear-gradient(165deg, rgba(10, 24, 44, 0.92) 0%, rgba(6, 10, 18, 0.98) 65%);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .messi-card-luxury:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.65);
+            box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.14), 0 25px 60px -12px rgba(56, 189, 248, 0.32);
+        }
+
+        .ronaldo-card-luxury {
+            background: linear-gradient(165deg, rgba(44, 10, 22, 0.92) 0%, rgba(6, 10, 18, 0.98) 65%);
+            border: 1px solid rgba(244, 63, 94, 0.28);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .ronaldo-card-luxury:hover {
+            transform: translateY(-4px);
+            border-color: rgba(244, 63, 94, 0.65);
+            box-shadow: inset 0 0 24px rgba(244, 63, 94, 0.14), 0 25px 60px -12px rgba(244, 63, 94, 0.32);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Honeypot hidden from humans */
+        .ballot-hp-trap {
+            opacity: 0 !important;
+            position: absolute !important;
+            top: -9999px !important;
+            left: -9999px !important;
+            height: 0 !important;
+            width: 0 !important;
+            z-index: -1 !important;
+            pointer-events: none !important;
+        }
+
+        /* Custom Slider Track for Human Ballot Verification */
+        .seal-track {
+            position: relative;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .seal-thumb {
+            touch-action: none;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: transform 0.05s linear;
+        }
+        .seal-thumb:active {
+            cursor: grabbing;
+        }
+
+        /* Tactical pitch grid */
+        .bg-grid-pattern {
+            background-size: 36px 36px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        /* Animated number roll-up */
+        @keyframes countUp {
+            from {
+                transform: translateY(6px);
+                opacity: 0.4;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .num-animate {
+            animation: countUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Tug-of-War Spring Progress Bar */
+        .split-bar-spring {
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Button Microinteraction: Radial Ripple on Click */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-ripple::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1) translate(-50%, -50%);
+            transform-origin: 0 0;
+            pointer-events: none;
+        }
+        .btn-ripple:active::after {
+            animation: rippleEffect 0.45s ease-out;
+        }
+        @keyframes rippleEffect {
+            0% {
+                transform: scale(0) translate(-50%, -50%);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(32) translate(-50%, -50%);
+                opacity: 0;
+            }
+        }
+
+        /* Stagger Entrance Keyframes */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .stagger-1 { animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.06s; }
+        .stagger-2 { animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.18s; }
+        .stagger-3 { animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.30s; }
+        .stagger-4 { animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.42s; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-grid-pattern selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- ===================================================================== -->
+    <!-- TOP RUNNING INTEGRITY BANNER                                          -->
+    <!-- ===================================================================== -->
+    <div class="bg-gradient-to-r from-sky-950/40 via-amber-950/40 to-rose-950/40 border-b border-white/5 py-1.5 px-4 text-center">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 text-[11px] font-mono text-slate-300">
+            <span class="inline-flex items-center gap-1.5 text-amber-300">
+                <i class="fa-solid fa-shield-halved text-xs"></i>
+                <span class="font-bold uppercase tracking-wider">Zero Bot Tolerance</span>
+            </span>
+            <span class="text-slate-600">•</span>
+            <span class="hidden sm:inline">Cryptographic SHA-256 Proof-of-Work</span>
+            <span class="hidden sm:inline text-slate-600">•</span>
+            <span>Strict 4-Hour Voter Cooldown</span>
+            <span class="text-slate-600">•</span>
+            <span id="backend-status-badge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="backend-status-text">Ledger Active</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- EDITORIAL HEADER WITH FLATTENED 9-DAY DEADLINE COUNTDOWN CLOCK         -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 bg-obsidian/95 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+            <!-- Brand Mark -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 p-[1px] shadow-lg shadow-amber-500/20 shrink-0">
+                    <div class="w-full h-full bg-obsidian rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-trophy text-amber-400 text-sm"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-serif font-extrabold text-sm sm:text-base tracking-normal text-white uppercase">
+                            THE TOUCHLINE REFERENDUM
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            Live Poll
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-300 tracking-wide">
+                        The Definitive Public Football Ballot • Lionel Messi vs. Cristiano Ronaldo
+                    </p>
+                </div>
+            </div>
+
+            <!-- Controls & Flattened 9-Day Official Poll Deadline Clock -->
+            <div class="flex items-center gap-3 flex-wrap justify-center">
+                <!-- Sound Toggle Button (44px touch target) -->
+                <button
+                    id="btn-toggle-sound"
+                    type="button"
+                    class="min-h-[44px] min-w-[44px] w-11 h-11 rounded-xl bg-charcoal border border-white/10 hover:border-amber-400/40 text-slate-300 hover:text-amber-300 flex items-center justify-center transition text-sm shadow-inner cursor-pointer"
+                    title="Toggle UI Sound Effects"
+                    aria-label="Toggle UI Sound Effects"
+                >
+                    <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+                </button>
+
+                <!-- Share Button (44px touch target) -->
+                <button
+                    id="btn-open-share"
+                    type="button"
+                    class="min-h-[44px] px-3.5 rounded-xl bg-charcoal border border-white/10 hover:border-amber-400/40 text-slate-300 hover:text-amber-300 flex items-center gap-2 transition text-xs font-mono font-semibold shadow-inner cursor-pointer"
+                    title="Share Referendum"
+                    aria-label="Share Referendum"
+                >
+                    <i class="fa-solid fa-share-nodes text-sm"></i>
+                    <span>Share</span>
+                </button>
+
+                <!-- Flattened 9-Day Countdown Clock (No Nested Mini-Cards) -->
+                <div class="flex items-center gap-3 bg-charcoal/90 border border-amber-500/30 rounded-2xl px-3.5 py-1.5 shadow-inner">
+                    <div class="text-right pr-2.5 border-r border-white/10">
+                        <span class="block text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold leading-tight">
+                            Poll Closes In
+                        </span>
+                        <span id="deadline-status-label" class="text-[11px] text-slate-300 font-medium leading-tight">
+                            9-Day Window
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5 font-mono text-center">
+                        <div class="px-1">
+                            <span id="cd-days" class="block text-sm sm:text-base font-extrabold text-amber-300">00</span>
+                            <span class="text-[11px] text-slate-400 uppercase font-mono">d</span>
+                        </div>
+                        <span class="text-amber-500/60 font-bold text-xs">:</span>
+                        <div class="px-1">
+                            <span id="cd-hours" class="block text-sm sm:text-base font-extrabold text-white">00</span>
+                            <span class="text-[11px] text-slate-400 uppercase font-mono">h</span>
+                        </div>
+                        <span class="text-amber-500/60 font-bold text-xs">:</span>
+                        <div class="px-1">
+                            <span id="cd-mins" class="block text-sm sm:text-base font-extrabold text-white">00</span>
+                            <span class="text-[11px] text-slate-400 uppercase font-mono">m</span>
+                        </div>
+                        <span class="text-amber-500/60 font-bold text-xs">:</span>
+                        <div class="px-1">
+                            <span id="cd-secs" class="block text-sm sm:text-base font-extrabold text-amber-400">00</span>
+                            <span class="text-[11px] text-slate-400 uppercase font-mono">s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN ARENA                                                            -->
+    <!-- ===================================================================== -->
+    <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 sm:space-y-12 flex-1">
+
+        <!-- EDITORIAL SPLIT-PANEL HERO: SCOREBOARD & MANIFESTO -->
+        <section class="editorial-card gold-border-glow rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden stagger-1">
+            <!-- Subtle Ambient Golden Aura -->
+            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-3/4 h-52 bg-amber-500/10 blur-3xl pointer-events-none"></div>
+
+            <!-- Two-Column Editorial Grid on Large Screens -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+                
+                <!-- LEFT COLUMN: LIVE STANDINGS SCOREBOARD & ARENA BATTLE (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-chart-simple text-amber-400 text-sm"></i>
+                            <span class="font-mono font-bold text-xs uppercase tracking-wider text-amber-300">
+                                Live Referendum Standings
+                            </span>
+                        </div>
+                        <div class="text-[11px] font-mono uppercase tracking-wider text-slate-300">
+                            Total Verified Ballots: <strong id="total-ballots-count" class="text-white font-bold">0</strong>
+                        </div>
+                    </div>
+
+                    <!-- Split Percentages & Animated Roll-Up Numbers -->
+                    <div class="flex items-end justify-between gap-4">
+                        <!-- Messi Live Share -->
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_10px_#38bdf8]"></span>
+                                <span class="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold">Lionel Messi (#10)</span>
+                            </div>
+                            <div class="flex items-baseline gap-2.5">
+                                <span id="bar-messi-percent" class="font-mono font-extrabold text-3xl sm:text-5xl text-white">0.0%</span>
+                                <span id="bar-messi-votes" class="font-mono text-xs sm:text-sm text-slate-300">(0 votes)</span>
+                            </div>
+                        </div>
+
+                        <!-- Ronaldo Live Share -->
+                        <div class="space-y-1 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <span class="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold">Cristiano Ronaldo (#7)</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_10px_#f43f5e]"></span>
+                            </div>
+                            <div class="flex items-baseline justify-end gap-2.5">
+                                <span id="bar-ronaldo-votes" class="font-mono text-xs sm:text-sm text-slate-300">(0 votes)</span>
+                                <span id="bar-ronaldo-percent" class="font-mono font-extrabold text-3xl sm:text-5xl text-white">0.0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spring-Animated Dual Split Tug-of-War Bar -->
+                    <div class="space-y-2">
+                        <div class="h-7 w-full bg-obsidian rounded-full overflow-hidden p-1 border border-white/10 flex relative shadow-inner">
+                            <div id="split-bar-messi" class="h-full bg-gradient-to-r from-sky-600 via-sky-400 to-cyan-300 rounded-l-full split-bar-spring" style="width: 50%;"></div>
+                            <div class="w-1.5 h-full bg-amber-400 z-10 shadow-[0_0_14px_#fbbf24] shrink-0"></div>
+                            <div id="split-bar-ronaldo" class="h-full bg-gradient-to-l from-rose-700 via-rose-500 to-orange-400 rounded-r-full split-bar-spring" style="width: 50%;"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] font-mono text-slate-400 px-1">
+                            <span>Sky Blue: Playmaker Mastery</span>
+                            <span>Crimson: Clutch Goalscoring</span>
+                        </div>
+                    </div>
+
+                    <!-- Status Differential Pill -->
+                    <div class="flex items-center justify-center pt-1">
+                        <div id="standings-status-pill" class="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-amber-300 text-center transition-all">
+                            Polls Open — Awaiting First Verified Ballot (0 - 0)
+                        </div>
+                    </div>
+
+                    <!-- ACTIVE 4-HOUR COOLDOWN BANNER (INSIDE SCOREBOARD ON LG) -->
+                    <div id="voter-cooldown-banner" class="hidden rounded-2xl p-4 bg-amber-950/40 border border-amber-500/40 backdrop-blur-md transition-all duration-300">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5 text-center sm:text-left">
+                                <div class="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 text-lg shrink-0">
+                                    <i class="fa-solid fa-lock"></i>
+                                </div>
+                                <div>
+                                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                        <span class="text-xs font-mono uppercase tracking-wider text-amber-300 font-bold">
+                                            Official Ballot Recorded
+                                        </span>
+                                        <span id="cooldown-backed-pill" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+                                            Verified
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-300 mt-1">
+                                        Cooldown active. You can vote again once your 4-hour window resets.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-obsidian/90 border border-amber-500/30 rounded-xl px-4 py-2 text-center shrink-0">
+                                <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-400">Next Ballot In</span>
+                                <span id="cooldown-timer-display" class="font-mono font-extrabold text-xl text-amber-400 tracking-wider">04:00:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: EDITORIAL MANIFESTO (5 cols) -->
+                <div class="lg:col-span-5 space-y-4 lg:pl-6 lg:border-l lg:border-white/10">
+                    <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold tracking-wide uppercase">
+                        <i class="fa-brands fa-bluetooth-b text-amber-400 text-sm"></i>
+                        <span>No Journalists • No PR Lobbies • No "BOAT" Trophies</span>
+                    </div>
+
+                    <h1 class="font-serif font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-[1.14]">
+                        THE PEOPLE’S VERDICT: <br />
+                        <span class="gold-gradient-text">TRUE GOAT OR BLUETOOTH BOAT?</span>
+                    </h1>
+
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                        For years, football fans watched ceremonial galas morph into the <strong class="text-amber-300 font-semibold">Ballon d’Or “BOAT” (Bluetooth Player Of All Time)</strong>: where awards magically pair wirelessly across continents, phantom ballots appear out of thin air, and PR narratives outrank 90 minutes on the pitch.
+                    </p>
+
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                        This is the unfiltered public referendum. Both contenders begin at zero. Every single vote requires cryptographic proof-of-work and is bound to a verified 4-hour window until the 9-day countdown closes.
+                    </p>
+
+                    <div class="pt-2 flex items-center gap-3 text-xs font-mono text-slate-300">
+                        <span class="inline-flex items-center gap-1.5 text-emerald-400">
+                            <i class="fa-solid fa-circle-check text-xs"></i> Direct Public Ledger
+                        </span>
+                        <span class="text-slate-600">•</span>
+                        <span class="inline-flex items-center gap-1.5 text-sky-400">
+                            <i class="fa-solid fa-scale-balanced text-xs"></i> Zero Skewed Pre-counts
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- CONTENDER CARDS: LIONEL MESSI vs. CRISTIANO RONALDO                   -->
+        <!-- ===================================================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch stagger-2">
+
+            <!-- CONTENDER 1: LIONEL MESSI -->
+            <article class="messi-card-luxury rounded-3xl overflow-hidden flex flex-col justify-between relative shadow-xl">
+                <div class="h-1.5 w-full bg-gradient-to-r from-sky-500 via-cyan-200 to-sky-500"></div>
+
+                <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
+                    <!-- Top Identity Header -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1.5">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-[11px] font-mono font-semibold uppercase tracking-wider">
+                                <span>🇦🇷 Argentina</span>
+                                <span>•</span>
+                                <span>El Diez</span>
+                            </div>
+                            <h2 class="font-serif font-black text-2xl sm:text-4xl text-white tracking-tight">
+                                LIONEL MESSI
+                            </h2>
+                        </div>
+                        <span class="font-serif font-black text-4xl sm:text-5xl text-sky-400/25 select-none leading-none">
+                            10
+                        </span>
+                    </div>
+
+                    <!-- Portrait Frame with Multitier Fallback -->
+                    <div class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-sky-950/60 to-obsidian border border-sky-400/30 h-72 sm:h-96 flex items-center justify-center group">
+                        <img
+                            id="portrait-messi"
+                            src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
+                            alt="Lionel Messi Official Portrait"
+                            loading="eager"
+                            referrerpolicy="no-referrer"
+                            crossorigin="anonymous"
+                            class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent"></div>
+
+                        <!-- Live Ballot Counter Overlay -->
+                        <div class="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-4">
+                            <div>
+                                <span class="text-[11px] font-mono uppercase tracking-wider text-sky-300 block mb-0.5">
+                                    Verified Ballots Cast
+                                </span>
+                                <div id="card-messi-votes" class="font-mono font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
+                                    0
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-3 py-1 rounded-full bg-sky-500/20 backdrop-blur-md border border-sky-400/40 text-sky-200 font-mono text-xs font-semibold">
+                                    Playmaker &amp; World Champion
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Editorial Dossier Note -->
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Unmatched natural dribbling, playmaking mastery, and the 2022 World Cup crown in Lusail—or the recipient of wireless <em>"Bluetooth BOAT"</em> accolades years after leaving Europe? Cast your official verdict.
+                    </p>
+
+                    <!-- Career Benchmark Strip -->
+                    <div class="grid grid-cols-3 gap-2.5 text-center">
+                        <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-3">
+                            <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-300">Career Goals</span>
+                            <span class="font-mono font-bold text-base sm:text-lg text-sky-300">850+</span>
+                        </div>
+                        <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-3">
+                            <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-300">Assists</span>
+                            <span class="font-mono font-bold text-base sm:text-lg text-sky-300">379+ (Record)</span>
+                        </div>
+                        <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-3">
+                            <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-300">Ballon d'Or</span>
+                            <span class="font-mono font-bold text-base sm:text-lg text-sky-300">8 Titles</span>
+                        </div>
+                    </div>
+
+                    <!-- Official Vote Button (High Contrast Dark Text on Sky Blue) -->
+                    <button
+                        id="btn-vote-messi"
+                        type="button"
+                        class="btn-ripple min-h-[48px] w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-sky-400 via-sky-300 to-cyan-300 hover:from-sky-300 hover:to-cyan-200 active:scale-[0.99] text-slate-950 font-display font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        aria-label="Cast Official Ballot For Lionel Messi"
+                    >
+                        <i class="fa-solid fa-check-to-slot text-slate-950"></i>
+                        <span id="btn-vote-messi-label">Cast Official Ballot For Messi</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- CONTENDER 2: CRISTIANO RONALDO -->
+            <article class="ronaldo-card-luxury rounded-3xl overflow-hidden flex flex-col justify-between relative shadow-xl">
+                <div class="h-1.5 w-full bg-gradient-to-r from-rose-600 via-red-400 to-rose-600"></div>
+
+                <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
+                    <!-- Top Identity Header -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1.5">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-400/30 text-rose-300 text-[11px] font-mono font-semibold uppercase tracking-wider">
+                                <span>🇵🇹 Portugal</span>
+                                <span>•</span>
+                                <span>El Bicho</span>
+                            </div>
+                            <h2 class="font-serif font-black text-2xl sm:text-4xl text-white tracking-tight">
+                                CRISTIANO RONALDO
+                            </h2>
+                        </div>
+                        <span class="font-serif font-black text-4xl sm:text-5xl text-rose-400/25 select-none leading-none">
+                            07
+                        </span>
+                    </div>
+
+                    <!-- Portrait Frame with Multitier Fallback -->
+                    <div class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-rose-950/60 to-obsidian border border-rose-400/30 h-72 sm:h-96 flex items-center justify-center group">
+                        <img
+                            id="portrait-ronaldo"
+                            src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg"
+                            alt="Cristiano Ronaldo Official Portrait"
+                            loading="eager"
+                            referrerpolicy="no-referrer"
+                            crossorigin="anonymous"
+                            class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/30 to-transparent"></div>
+
+                        <!-- Live Ballot Counter Overlay -->
+                        <div class="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-4">
+                            <div>
+                                <span class="text-[11px] font-mono uppercase tracking-wider text-rose-300 block mb-0.5">
+                                    Verified Ballots Cast
+                                </span>
+                                <div id="card-ronaldo-votes" class="font-mono font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
+                                    0
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-3 py-1 rounded-full bg-rose-500/20 backdrop-blur-md border border-rose-400/40 text-rose-200 font-mono text-xs font-semibold">
+                                    All-Time Top Goalscorer
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Editorial Dossier Note -->
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Ruthless clutch mentality, conquered England, Spain, and Italy, 5 Champions League crowns, and the highest official goal tally in history—without needing a single wireless <em>"Bluetooth"</em> sympathy vote. Cast your verdict.
+                    </p>
+
+                    <!-- Career Benchmark Strip -->
+                    <div class="grid grid-cols-3 gap-2.5 text-center">
+                        <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-3">
+                            <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-300">Official Goals</span>
+                            <span class="font-mono font-bold text-base sm:text-lg text-rose-300">920+ (Record)</span>
+                        </div>
+                        <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-3">
+                            <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-300">UCL Goals</span>
+                            <span class="font-mono font-bold text-base sm:text-lg text-rose-300">140 (Record)</span>
+                        </div>
+                        <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-3">
+                            <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-300">UCL Crowns</span>
+                            <span class="font-mono font-bold text-base sm:text-lg text-rose-300">5 Titles</span>
+                        </div>
+                    </div>
+
+                    <!-- Official Vote Button (High Contrast White Text on Crimson Red) -->
+                    <button
+                        id="btn-vote-ronaldo"
+                        type="button"
+                        class="btn-ripple min-h-[48px] w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-500 to-red-700 hover:from-rose-500 hover:to-red-600 active:scale-[0.99] text-white font-display font-extrabold text-sm sm:text-base tracking-wider uppercase shadow-lg shadow-rose-600/30 transition flex items-center justify-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        aria-label="Cast Official Ballot For Cristiano Ronaldo"
+                    >
+                        <i class="fa-solid fa-check-to-slot text-white"></i>
+                        <span id="btn-vote-ronaldo-label">Cast Official Ballot For Ronaldo</span>
+                    </button>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- HEAD-TO-HEAD CAREER HONOURS DOSSIER (OFFICIAL BENCHMARKS)             -->
+        <!-- ===================================================================== -->
+        <section class="editorial-card rounded-3xl p-6 sm:p-8 border border-white/10 stagger-3">
+            <div class="text-center max-w-2xl mx-auto mb-6 space-y-1">
+                <span class="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold">Official FIFA &amp; UEFA Career Benchmarks</span>
+                <h3 class="font-serif font-black text-xl sm:text-2xl text-white tracking-tight">THE CAREER DOSSIER</h3>
+                <p class="text-xs text-slate-300">Comparing career records, individual accolades, and major championships.</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm font-mono border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10 text-slate-300 uppercase tracking-wider text-[11px]">
+                            <th class="py-3 px-4 text-sky-400 font-bold">Lionel Messi</th>
+                            <th class="py-3 px-4 text-center font-bold text-amber-400">Honor / Metric</th>
+                            <th class="py-3 px-4 text-right text-rose-400 font-bold">Cristiano Ronaldo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-sky-300 font-bold">1 (2022 Champion) 🏆</td>
+                            <td class="py-3 px-4 text-center text-slate-200">FIFA World Cup</td>
+                            <td class="py-3 px-4 text-right text-slate-400">0</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-sky-300 font-bold">8 (All-Time Record) 🥇</td>
+                            <td class="py-3 px-4 text-center text-slate-200">Ballon d'Or Awards</td>
+                            <td class="py-3 px-4 text-right text-slate-200 font-bold">5</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-slate-200">4</td>
+                            <td class="py-3 px-4 text-center text-slate-200">UEFA Champions League</td>
+                            <td class="py-3 px-4 text-right text-rose-300 font-bold">5 🏆</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-slate-200 font-bold">850+</td>
+                            <td class="py-3 px-4 text-center text-slate-200">Official Career Goals</td>
+                            <td class="py-3 px-4 text-right text-rose-300 font-bold">920+ (Record) ⚡</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-sky-300 font-bold">379+ (Record) 🎯</td>
+                            <td class="py-3 px-4 text-center text-slate-200">Career Assists</td>
+                            <td class="py-3 px-4 text-right text-slate-400">250+</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-slate-200">112</td>
+                            <td class="py-3 px-4 text-center text-slate-200">International Goals</td>
+                            <td class="py-3 px-4 text-right text-rose-300 font-bold">135 (Record) 🌍</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-sky-300 font-bold">6 (Record) 👟</td>
+                            <td class="py-3 px-4 text-center text-slate-200">European Golden Shoes</td>
+                            <td class="py-3 px-4 text-right text-slate-200">4</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-sky-300 font-bold">46 (Most in History) 👑</td>
+                            <td class="py-3 px-4 text-center text-slate-200">Total Career Trophies</td>
+                            <td class="py-3 px-4 text-right text-slate-200">35</td>
+                        </tr>
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="py-3 px-4 text-slate-200">57</td>
+                            <td class="py-3 px-4 text-center text-slate-200">Career Hat-Tricks</td>
+                            <td class="py-3 px-4 text-right text-rose-300 font-bold">66 (Active Leader) 🎩</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- LIVE GLOBAL ACTIVITY PULSE                                            -->
+        <!-- ===================================================================== -->
+        <section class="editorial-card rounded-2xl p-4 sm:p-5 border border-white/10 stagger-4">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">Live Global Ballot Stream</span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-300">Real-Time Cryptographic Ledger</span>
+            </div>
+            <!-- Dynamic stream without static fake items -->
+            <div id="live-activity-stream" class="space-y-2 max-h-48 overflow-y-auto text-xs font-mono text-slate-300 pr-1">
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- ELECTORAL INTEGRITY RULES                                             -->
+        <!-- ===================================================================== -->
+        <section class="editorial-card rounded-3xl p-6 sm:p-8 border border-white/10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                        <i class="fa-solid fa-scale-balanced text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">Starts Strictly From Zero</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                            Unlike skewed internet polls with pre-loaded bot counts, both contenders start at <span class="text-amber-300 font-mono font-bold">0</span>. Every increment represents a verified ballot.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0 mt-0.5">
+                        <i class="fa-solid fa-hourglass-half text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">4-Hour Cooldown Window</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                            No spam voting. Once your ballot is cast, your device and network enter a mandatory 4-hour cooldown enforced globally and mirrored locally.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
+                        <i class="fa-solid fa-calendar-check text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">9-Day Public Window</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                            The referendum closes permanently when the 9-day countdown reaches zero. At that point, the ballot box seals and the final public verdict is locked forever.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- EDITORIAL FOOTER                                                      -->
+    <!-- ===================================================================== -->
+    <footer class="border-t border-white/10 bg-obsidian/95 py-6 px-4 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p class="font-serif tracking-wider uppercase text-slate-300">
+                THE TOUCHLINE REFERENDUM • PUBLIC FOOTBALL BALLOT
+            </p>
+            <p class="text-[11px] text-slate-400 font-mono">
+                SHA-256 Proof-of-Work • 4-Hour Cooldown • 9-Day Window • Deployment Ready
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- HUMAN BALLOT VERIFICATION MODAL (SLIDE TO SEAL)                       -->
+    <!-- ===================================================================== -->
+    <div id="ballot-modal" role="dialog" aria-modal="true" aria-labelledby="ballot-modal-title" class="fixed inset-0 z-50 hidden bg-obsidian/90 backdrop-blur-lg flex items-center justify-center p-4">
+        <div class="editorial-card gold-border-glow max-w-md w-full rounded-3xl p-6 sm:p-8 space-y-6 relative shadow-2xl">
+            <!-- Close Button (Min 44px Touch Target) -->
+            <button id="btn-close-modal" type="button" class="min-h-[44px] min-w-[44px] w-11 h-11 absolute top-4 right-4 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer" aria-label="Close ballot confirmation dialog">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <div class="text-center space-y-2">
+                <span class="inline-block text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold">
+                    Official Ballot Authentication
+                </span>
+                <h3 id="ballot-modal-title" class="font-serif font-black text-xl sm:text-2xl text-white tracking-tight">
+                    Confirm Your Public Vote
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    You are sealing an official vote for <strong id="modal-candidate-name" class="text-amber-300 uppercase">LIONEL MESSI</strong>. Slide the golden seal across or tap to verify human presence.
+                </p>
+            </div>
+
+            <!-- Honeypots strictly hidden from human interaction -->
+            <div class="ballot-hp-trap" aria-hidden="true">
+                <label for="website">Do not fill this field</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" value="" />
+                <label for="official_ballot_fax_number">Do not fill this field</label>
+                <input type="text" id="official_ballot_fax_number" name="official_ballot_fax_number" tabindex="-1" autocomplete="off" value="" />
+            </div>
+
+            <!-- Interactive Slide-to-Seal Track -->
+            <div class="space-y-2">
+                <div id="seal-track" class="seal-track h-14 w-full rounded-2xl bg-obsidian border border-amber-500/40 p-1.5 flex items-center relative select-none shadow-inner cursor-pointer">
+                    <!-- Fill Progress -->
+                    <div id="seal-fill" class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-amber-500/20 to-amber-400/40 pointer-events-none transition-none" style="width: 0%;"></div>
+
+                    <!-- Center Instruction Text -->
+                    <div id="seal-instruction" class="w-full text-center text-xs font-mono uppercase tracking-wider text-slate-300 pointer-events-none z-10 font-semibold">
+                        Slide Seal to Cast Ballot <i class="fa-solid fa-angles-right ml-1 text-amber-400"></i>
+                    </div>
+
+                    <!-- Draggable Thumb (Min 44px) -->
+                    <div id="seal-thumb" class="seal-thumb min-h-[44px] min-w-[44px] w-11 h-11 rounded-xl bg-gradient-to-br from-amber-300 via-amber-500 to-amber-600 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/40 z-20 relative" style="transform: translateX(0px);">
+                        <i id="seal-thumb-icon" class="fa-solid fa-stamp text-base pointer-events-none text-slate-950"></i>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-[11px] font-mono text-slate-300 px-1">
+                    <span>One Vote Per 4-Hour Window</span>
+                    <button id="btn-quick-verify" type="button" class="min-h-[44px] py-2 text-amber-300 hover:text-amber-200 underline cursor-pointer font-semibold" aria-label="Auto-verify and cast ballot">
+                        Tap here to auto-slide
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error / Validation Feedback inside Modal -->
+            <div id="modal-feedback-box" class="hidden text-xs font-medium text-center py-2.5 px-3.5 rounded-xl"></div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- OFFICIAL BALLOT CERTIFICATE / RECEIPT MODAL                           -->
+    <!-- ===================================================================== -->
+    <div id="receipt-modal" role="dialog" aria-modal="true" aria-labelledby="receipt-modal-title" class="fixed inset-0 z-50 hidden bg-obsidian/90 backdrop-blur-lg flex items-center justify-center p-4">
+        <div class="editorial-card gold-border-glow max-w-md w-full rounded-3xl p-6 sm:p-8 space-y-6 relative shadow-2xl text-center">
+            <button id="btn-close-receipt" type="button" class="min-h-[44px] min-w-[44px] w-11 h-11 absolute top-4 right-4 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer" aria-label="Close ballot certificate">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <div class="w-14 h-14 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-stamp"></i>
+            </div>
+
+            <div class="space-y-1.5">
+                <span class="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold block">Cryptographic Receipt Issued</span>
+                <h3 id="receipt-modal-title" class="font-serif font-black text-2xl text-white tracking-tight">OFFICIAL BALLOT SEALED</h3>
+                <p class="text-xs text-slate-300">Your vote has been committed to the public ledger.</p>
+            </div>
+
+            <div class="bg-obsidian/80 border border-white/10 rounded-2xl p-4 text-xs font-mono space-y-2 text-left">
+                <div class="flex justify-between border-b border-white/5 pb-1.5">
+                    <span class="text-slate-400">Candidate Backed:</span>
+                    <strong id="receipt-candidate" class="text-amber-300 uppercase font-bold">LIONEL MESSI</strong>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-1.5">
+                    <span class="text-slate-400">Ballot Serial:</span>
+                    <span id="receipt-serial" class="text-white font-bold">#TLR-2026-F98A12</span>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-1.5">
+                    <span class="text-slate-400">Timestamp:</span>
+                    <span id="receipt-time" class="text-slate-200">Just Now</span>
+                </div>
+                <div class="flex justify-between items-center pt-0.5">
+                    <span class="text-slate-400">Proof-of-Work:</span>
+                    <span class="text-emerald-400 font-bold text-[11px]">SHA-256 Validated ✓</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button
+                    id="btn-receipt-share-x"
+                    type="button"
+                    class="btn-ripple min-h-[48px] py-3 px-4 rounded-xl bg-black border border-white/20 hover:border-white/40 text-white font-mono text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer"
+                    aria-label="Share ballot certificate on X"
+                >
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <span>Share on X</span>
+                </button>
+                <button
+                    id="btn-receipt-copy"
+                    type="button"
+                    class="btn-ripple min-h-[48px] py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer"
+                    aria-label="Copy ballot link to clipboard"
+                >
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Copy Link</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIRAL SHARE MODAL                                                     -->
+    <!-- ===================================================================== -->
+    <div id="share-modal" role="dialog" aria-modal="true" aria-labelledby="share-modal-title" class="fixed inset-0 z-50 hidden bg-obsidian/90 backdrop-blur-lg flex items-center justify-center p-4">
+        <div class="editorial-card gold-border-glow max-w-sm w-full rounded-3xl p-6 space-y-5 relative shadow-2xl text-center">
+            <button id="btn-close-share" type="button" class="min-h-[44px] min-w-[44px] w-11 h-11 absolute top-4 right-4 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer" aria-label="Close share dialog">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <div class="space-y-1">
+                <h3 id="share-modal-title" class="font-serif font-black text-xl text-white tracking-tight">SHARE THE REFERENDUM</h3>
+                <p class="text-xs text-slate-300">Send the official public poll to friends and football groups.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button id="share-btn-x" class="btn-ripple min-h-[44px] py-3 px-4 rounded-xl bg-black border border-white/20 hover:border-white/40 text-white font-mono text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer" aria-label="Share on X">
+                    <i class="fa-brands fa-x-twitter"></i> X / Twitter
+                </button>
+                <button id="share-btn-wa" class="btn-ripple min-h-[44px] py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer" aria-label="Share on WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </button>
+                <button id="share-btn-tg" class="btn-ripple min-h-[44px] py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-mono text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer" aria-label="Share on Telegram">
+                    <i class="fa-brands fa-telegram"></i> Telegram
+                </button>
+                <button id="share-btn-copy" class="btn-ripple min-h-[44px] py-3 px-4 rounded-xl bg-charcoal border border-white/20 hover:border-amber-400 text-amber-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer" aria-label="Copy referendum link">
+                    <i class="fa-solid fa-link"></i> Copy Link
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- CLEAN TOAST NOTIFICATIONS STACK                                       -->
+    <!-- ===================================================================== -->
+    <div id="toast-stack" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ===================================================================== -->
+    <!-- HIGH-INTEGRITY APPLICATION LOGIC (DUAL SERVER/LOCAL ENGINE)           -->
+    <!-- ===================================================================== -->
+    <script>
+        'use strict';
+
+        (function () {
+            const COOLDOWN_MS = 4 * 60 * 60 * 1000;         // 4 Hours
+            const NINE_DAYS_MS = 9 * 24 * 60 * 60 * 1000;   // 9 Days
+            const BROADCAST_NAME = 'touchline_referendum_channel';
+            const DEADLINE_KEY = 'TLR_DEADLINE_V1';
+
+            // Shared Epoch Deadline Initialization (Persists across sessions & page reloads)
+            function initPollDeadline() {
+                try {
+                    const stored = localStorage.getItem(DEADLINE_KEY);
+                    if (stored) {
+                        const val = parseInt(stored, 10);
+                        if (!isNaN(val) && val > 0) return val;
+                    }
+                } catch (_) {}
+                const fresh = Date.now() + NINE_DAYS_MS;
+                try { localStorage.setItem(DEADLINE_KEY, String(fresh)); } catch (_) {}
+                return fresh;
+            }
+
+            // Internal Encapsulated State
+            const vault = {
+                backendType: 'local', // 'node' | 'firebase' | 'local'
+                messiCount: 0,
+                ronaldoCount: 0,
+                lockedUntil: 0,
+                lockedCandidate: null,
+                pollDeadlineMs: initPollDeadline(),
+                soundEnabled: localStorage.getItem('tlr_sound') !== '0',
+                audioCtx: null,
+                isSubmitting: false,
+                pendingCandidate: null,
+                broadcastChannel: null,
+                lastBallotReceipt: null,
+                // Slider state
+                isDragging: false,
+                dragStartX: 0,
+                maxTravel: 100
+            };
+
+            // Focus Trapping and Modal Accessibility State
+            let activeFocusTrapCleanup = null;
+            let lastTriggerElement = null;
+
+            function trapFocus(modalEl, triggerEl) {
+                if (activeFocusTrapCleanup) {
+                    activeFocusTrapCleanup();
+                }
+                lastTriggerElement = triggerEl || document.activeElement;
+
+                const focusableSelectors = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+                
+                function handleKeyDown(e) {
+                    if (e.key !== 'Tab') return;
+                    const focusable = Array.from(modalEl.querySelectorAll(focusableSelectors))
+                        .filter(el => el.offsetParent !== null && !el.closest('.ballot-hp-trap'));
+                    if (focusable.length === 0) {
+                        e.preventDefault();
+                        return;
+                    }
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === first || !modalEl.contains(document.activeElement)) {
+                            last.focus();
+                            e.preventDefault();
+                        }
+                    } else {
+                        if (document.activeElement === last || !modalEl.contains(document.activeElement)) {
+                            first.focus();
+                            e.preventDefault();
+                        }
+                    }
+                }
+
+                modalEl.addEventListener('keydown', handleKeyDown);
+
+                setTimeout(() => {
+                    const focusable = Array.from(modalEl.querySelectorAll(focusableSelectors))
+                        .filter(el => el.offsetParent !== null && !el.closest('.ballot-hp-trap'));
+                    if (focusable.length > 0) focusable[0].focus();
+                }, 30);
+
+                activeFocusTrapCleanup = () => {
+                    modalEl.removeEventListener('keydown', handleKeyDown);
+                    if (lastTriggerElement && typeof lastTriggerElement.focus === 'function') {
+                        try { lastTriggerElement.focus(); } catch (_) {}
+                    }
+                    activeFocusTrapCleanup = null;
+                    lastTriggerElement = null;
+                };
+            }
+
+            // =================================================================
+            // 1. FAST PURE-JS SYNCHRONOUS SHA-256 (20,000+ hashes/sec)
+            // =================================================================
+            function sha256Sync(ascii) {
+                function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+                var mathPow = Math.pow, lengthProperty = 'length', i, j, result = '';
+                var words = [], asciiBitLength = ascii[lengthProperty] * 8, hash = [
+                    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+                ], k = [
+                    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+                    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+                    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+                    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+                    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+                    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+                    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+                    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+                ];
+                for (i = 0; i < asciiBitLength; i += 8) words[i >> 5] |= (ascii.charCodeAt(i / 8) & 255) << (24 - i % 32);
+                words[asciiBitLength >> 5] |= 0x80 << (24 - asciiBitLength % 32);
+                words[(((asciiBitLength + 64) >> 9) << 4) + 15] = asciiBitLength;
+                for (i = 0; i < words[lengthProperty]; i += 16) {
+                    var w = words.slice(i, i + 16), oldHash = hash.slice(0);
+                    for (j = 16; j < 64; j++) {
+                        var s0 = rightRotate(w[j - 15], 7) ^ rightRotate(w[j - 15], 18) ^ (w[j - 15] >>> 3);
+                        var s1 = rightRotate(w[j - 2], 17) ^ rightRotate(w[j - 2], 19) ^ (w[j - 2] >>> 10);
+                        w[j] = (w[j - 16] + s0 + w[j - 7] + s1) | 0;
+                    }
+                    for (j = 0; j < 64; j++) {
+                        var S1 = rightRotate(hash[4], 6) ^ rightRotate(hash[4], 11) ^ rightRotate(hash[4], 25);
+                        var ch = (hash[4] & hash[5]) ^ ((~hash[4]) & hash[6]);
+                        var temp1 = (hash[7] + S1 + ch + k[j] + w[j]) | 0;
+                        var S0 = rightRotate(hash[0], 2) ^ rightRotate(hash[0], 13) ^ rightRotate(hash[0], 22);
+                        var maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+                        var temp2 = (S0 + maj) | 0;
+                        hash = [(temp1 + temp2) | 0, hash[0], hash[1], hash[2], (hash[3] + temp1) | 0, hash[4], hash[5], hash[6]];
+                    }
+                    for (j = 0; j < 8; j++) hash[j] = (hash[j] + oldHash[j]) | 0;
+                }
+                for (i = 0; i < 8; i++) {
+                    for (j = 3; j >= 0; j--) {
+                        var b = (hash[i] >> (j * 8)) & 255;
+                        result += (b < 16 ? '0' : '') + b.toString(16);
+                    }
+                }
+                return result;
+            }
+
+            // =================================================================
+            // 2. WEB AUDIO SYNTHESIZER (NO EXTERNAL AUDIO FILES NEEDED)
+            // =================================================================
+            function playAudioTone(type) {
+                if (!vault.soundEnabled) return;
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContext) return;
+                    if (!vault.audioCtx) vault.audioCtx = new AudioContext();
+                    if (vault.audioCtx.state === 'suspended') vault.audioCtx.resume();
+                    const ctx = vault.audioCtx;
+                    const now = ctx.currentTime;
+
+                    if (type === 'click') {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(500, now);
+                        osc.frequency.exponentialRampToValueAtTime(150, now + 0.05);
+                        gain.gain.setValueAtTime(0.08, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.05);
+                    } else if (type === 'chime') {
+                        // Golden celebration chord: C5, E5, G5, C6
+                        const notes = [523.25, 659.25, 783.99, 1046.50];
+                        notes.forEach((freq, idx) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.type = 'triangle';
+                            osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                            gain.gain.setValueAtTime(0.12, now + idx * 0.07);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.55);
+                            osc.connect(gain);
+                            gain.connect(ctx.destination);
+                            osc.start(now + idx * 0.07);
+                            osc.stop(now + idx * 0.07 + 0.6);
+                        });
+                    }
+                } catch (_) {}
+            }
+
+            // =================================================================
+            // 3. MULTI-TIER RESILIENT PORTRAIT FALLBACKS
+            // =================================================================
+            function buildSvgFallback(candidate) {
+                if (candidate === 'messi') {
+                    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750">
+                        <defs>
+                            <linearGradient id="mGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#0369a1"/>
+                                <stop offset="50%" stop-color="#06070a"/>
+                                <stop offset="100%" stop-color="#0284c7"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="600" height="750" fill="url(#mGrad)"/>
+                        <circle cx="300" cy="240" r="110" fill="#38bdf8" opacity="0.2"/>
+                        <circle cx="300" cy="230" r="80" fill="#e2e8f0"/>
+                        <path d="M150 680 C150 440 450 440 450 680 Z" fill="#38bdf8" opacity="0.35"/>
+                        <text x="300" y="560" text-anchor="middle" fill="#ffffff" font-family="Cinzel, serif" font-weight="900" font-size="90">10</text>
+                        <text x="300" y="630" text-anchor="middle" fill="#bae6fd" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="28" letter-spacing="4">LIONEL MESSI</text>
+                    </svg>`;
+                    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+                } else {
+                    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750">
+                        <defs>
+                            <linearGradient id="rGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#9f1239"/>
+                                <stop offset="50%" stop-color="#06070a"/>
+                                <stop offset="100%" stop-color="#e11d48"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="600" height="750" fill="url(#rGrad)"/>
+                        <circle cx="300" cy="240" r="110" fill="#f43f5e" opacity="0.2"/>
+                        <circle cx="300" cy="230" r="80" fill="#e2e8f0"/>
+                        <path d="M150 680 C150 440 450 440 450 680 Z" fill="#f43f5e" opacity="0.35"/>
+                        <text x="300" y="560" text-anchor="middle" fill="#ffffff" font-family="Cinzel, serif" font-weight="900" font-size="90">07</text>
+                        <text x="300" y="630" text-anchor="middle" fill="#fecdd3" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="28" letter-spacing="4">CRISTIANO RONALDO</text>
+                    </svg>`;
+                    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+                }
+            }
+
+            function initPortraitFallbacks() {
+                const messiImg = document.getElementById('portrait-messi');
+                const ronaldoImg = document.getElementById('portrait-ronaldo');
+
+                if (messiImg) {
+                    const messiSources = [
+                        'https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg',
+                        'https://commons.wikimedia.org/wiki/Special:FilePath/Lionel_Messi_WC2022.jpg',
+                        buildSvgFallback('messi')
+                    ];
+                    let mIdx = 0;
+                    messiImg.addEventListener('error', () => {
+                        mIdx++;
+                        if (mIdx < messiSources.length) {
+                            messiImg.src = messiSources[mIdx];
+                        }
+                    });
+                }
+
+                if (ronaldoImg) {
+                    const ronaldoSources = [
+                        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg',
+                        'https://commons.wikimedia.org/wiki/Special:FilePath/Cristiano_Ronaldo_WC2022_-_01_(cropped).jpg',
+                        buildSvgFallback('ronaldo')
+                    ];
+                    let rIdx = 0;
+                    ronaldoImg.addEventListener('error', () => {
+                        rIdx++;
+                        if (rIdx < ronaldoSources.length) {
+                            ronaldoImg.src = ronaldoSources[rIdx];
+                        }
+                    });
+                }
+            }
+
+            // =================================================================
+            // 4. PERSISTENT STORAGE LAYER (LOCALSTORAGE & INDEXEDDB)
+            // =================================================================
+            function getLocalState() {
+                try {
+                    const stored = localStorage.getItem('tlr_state_v2');
+                    if (stored) return JSON.parse(stored);
+                } catch (_) {}
+                return { messi: 0, ronaldo: 0, lockedUntil: 0, lockedCandidate: null };
+            }
+
+            function saveLocalState(st) {
+                try {
+                    localStorage.setItem('tlr_state_v2', JSON.stringify({
+                        messi: vault.messiCount,
+                        ronaldo: vault.ronaldoCount,
+                        lockedUntil: vault.lockedUntil,
+                        lockedCandidate: vault.lockedCandidate,
+                        ...st
+                    }));
+                } catch (_) {}
+            }
+
+            // =================================================================
+            // 5. BROADCAST CHANNEL (SAME-BROWSER MULTI-TAB SYNCHRONIZATION)
+            // =================================================================
+            function initBroadcast() {
+                try {
+                    if (typeof BroadcastChannel !== 'undefined') {
+                        vault.broadcastChannel = new BroadcastChannel(BROADCAST_NAME);
+                        vault.broadcastChannel.onmessage = (e) => {
+                            if (!e || !e.data) return;
+                            const { type, payload } = e.data;
+                            if (type === 'STATE_UPDATE') {
+                                vault.messiCount = payload.messi;
+                                vault.ronaldoCount = payload.ronaldo;
+                                if (payload.lockedUntil > vault.lockedUntil) {
+                                    vault.lockedUntil = payload.lockedUntil;
+                                    vault.lockedCandidate = payload.lockedCandidate;
+                                }
+                                renderStandingsUI();
+                                renderCooldownUI();
+                            }
+                        };
+                    }
+                } catch (_) {}
+            }
+
+            function broadcastState() {
+                if (vault.broadcastChannel) {
+                    try {
+                        vault.broadcastChannel.postMessage({
+                            type: 'STATE_UPDATE',
+                            payload: {
+                                messi: vault.messiCount,
+                                ronaldo: vault.ronaldoCount,
+                                lockedUntil: vault.lockedUntil,
+                                lockedCandidate: vault.lockedCandidate
+                            }
+                        });
+                    } catch (_) {}
+                }
+            }
+
+            // =================================================================
+            // 6. BACKEND AUTO-DISCOVERY & CONNECTION
+            // =================================================================
+            async function detectBackend() {
+                const badgeEl = document.getElementById('backend-status-badge');
+                const textEl = document.getElementById('backend-status-text');
+
+                // 1. Check if Node server endpoint (/api/state) is running
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+                    const res = await fetch('/api/state', { cache: 'no-store', signal: controller.signal });
+                    clearTimeout(timeoutId);
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (typeof data.messi === 'number' && typeof data.ronaldo === 'number') {
+                            vault.backendType = 'node';
+                            vault.messiCount = data.messi;
+                            vault.ronaldoCount = data.ronaldo;
+                            if (data.cooldownMs && data.cooldownMs > 0) {
+                                vault.lockedUntil = Date.now() + data.cooldownMs;
+                            }
+                            if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
+                                vault.pollDeadlineMs = data.deadlineMs;
+                                try { localStorage.setItem(DEADLINE_KEY, String(data.deadlineMs)); } catch (_) {}
+                            }
+                            if (badgeEl && textEl) {
+                                textEl.textContent = 'Node Server Synced';
+                                badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]';
+                            }
+                            renderStandingsUI();
+                            renderCooldownUI();
+                            renderNineDayDeadlineClock();
+                            setInterval(pollNodeState, 6000);
+                            return;
+                        }
+                    }
+                } catch (_) {}
+
+                // 2. Check if Firebase configuration is provided
+                if (typeof window.__firebase_config !== 'undefined' && window.__firebase_config) {
+                    vault.backendType = 'firebase';
+                    if (badgeEl && textEl) {
+                        textEl.textContent = 'Firestore Synced';
+                        badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold text-[11px]';
+                    }
+                    await initFirebaseLedger();
+                    return;
+                }
+
+                // 3. Fallback to High-Integrity Local Ledger
+                vault.backendType = 'local';
+                const local = getLocalState();
+                vault.messiCount = local.messi || 0;
+                vault.ronaldoCount = local.ronaldo || 0;
+                vault.lockedUntil = local.lockedUntil || 0;
+                vault.lockedCandidate = local.lockedCandidate || null;
+
+                if (badgeEl && textEl) {
+                    textEl.textContent = 'Verified Local Ledger';
+                    badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30 font-semibold text-[11px]';
+                }
+
+                renderStandingsUI();
+                renderCooldownUI();
+                renderNineDayDeadlineClock();
+            }
+
+            async function pollNodeState() {
+                if (vault.backendType !== 'node') return;
+                try {
+                    const res = await fetch('/api/state', { cache: 'no-store' });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (typeof data.messi === 'number') vault.messiCount = data.messi;
+                        if (typeof data.ronaldo === 'number') vault.ronaldoCount = data.ronaldo;
+                        if (data.cooldownMs && data.cooldownMs > 0) {
+                            const newLock = Date.now() + data.cooldownMs;
+                            if (newLock > vault.lockedUntil) vault.lockedUntil = newLock;
+                        }
+                        if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
+                            vault.pollDeadlineMs = data.deadlineMs;
+                            try { localStorage.setItem(DEADLINE_KEY, String(data.deadlineMs)); } catch (_) {}
+                        }
+                        renderStandingsUI();
+                        renderCooldownUI();
+                    }
+                } catch (_) {}
+            }
+
+            async function initFirebaseLedger() {
+                try {
+                    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
+                    const { getAuth, signInAnonymously } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
+                    const { getFirestore, doc, onSnapshot, setDoc, getDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+
+                    const config = JSON.parse(window.__firebase_config);
+                    const app = initializeApp(config);
+                    const auth = getAuth(app);
+                    const db = getFirestore(app);
+
+                    await signInAnonymously(auth);
+                    vault.db = db;
+                    vault.uid = auth.currentUser ? auth.currentUser.uid : 'anon';
+
+                    const docRef = doc(db, 'referendum', 'public_counts');
+                    onSnapshot(docRef, (snap) => {
+                        if (snap.exists()) {
+                            const d = snap.data();
+                            if (typeof d.messi === 'number') vault.messiCount = d.messi;
+                            if (typeof d.ronaldo === 'number') vault.ronaldoCount = d.ronaldo;
+                            renderStandingsUI();
+                        }
+                    });
+                } catch (err) {
+                    console.warn('Firebase connection failed, switching to local ledger:', err);
+                    vault.backendType = 'local';
+                    renderStandingsUI();
+                }
+            }
+
+            // =================================================================
+            // 7. HUMAN GESTURE & BALLOT VERIFICATION FLOW
+            // =================================================================
+            function openBallotModal(candidate, triggerBtn) {
+                playAudioTone('click');
+
+                if (Date.now() >= vault.pollDeadlineMs) {
+                    notify('The 9-day official referendum window has concluded.', 'warning');
+                    return;
+                }
+
+                if (Date.now() < vault.lockedUntil) {
+                    notify('Your 4-hour voter cooldown is currently active.', 'warning');
+                    renderCooldownUI();
+                    return;
+                }
+
+                vault.pendingCandidate = candidate;
+                const nameEl = document.getElementById('modal-candidate-name');
+                if (nameEl) {
+                    if (candidate === 'messi') {
+                        nameEl.textContent = 'LIONEL MESSI (#10)';
+                        nameEl.className = 'text-sky-400 font-bold uppercase';
+                    } else {
+                        nameEl.textContent = 'CRISTIANO RONALDO (#7)';
+                        nameEl.className = 'text-rose-400 font-bold uppercase';
+                    }
+                }
+
+                resetSealSlider();
+                const hp1 = document.getElementById('website');
+                const hp2 = document.getElementById('official_ballot_fax_number');
+                if (hp1) hp1.value = '';
+                if (hp2) hp2.value = '';
+
+                const fb = document.getElementById('modal-feedback-box');
+                if (fb) fb.classList.add('hidden');
+
+                const modal = document.getElementById('ballot-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    trapFocus(modal, triggerBtn);
+                }
+            }
+
+            function closeBallotModal() {
+                if (vault.isSubmitting) return;
+                const modal = document.getElementById('ballot-modal');
+                if (modal) modal.classList.add('hidden');
+                vault.pendingCandidate = null;
+                resetSealSlider();
+                if (activeFocusTrapCleanup) activeFocusTrapCleanup();
+            }
+
+            function closeReceiptModal() {
+                const modal = document.getElementById('receipt-modal');
+                if (modal) modal.classList.add('hidden');
+                if (activeFocusTrapCleanup) activeFocusTrapCleanup();
+            }
+
+            function closeShareModal() {
+                const modal = document.getElementById('share-modal');
+                if (modal) modal.classList.add('hidden');
+                if (activeFocusTrapCleanup) activeFocusTrapCleanup();
+            }
+
+            function resetSealSlider() {
+                vault.isDragging = false;
+                const thumb = document.getElementById('seal-thumb');
+                const fill = document.getElementById('seal-fill');
+                const instruction = document.getElementById('seal-instruction');
+                const icon = document.getElementById('seal-thumb-icon');
+
+                if (thumb) thumb.style.transform = 'translateX(0px)';
+                if (fill) fill.style.width = '0%';
+                if (instruction) instruction.innerHTML = 'Slide Seal to Cast Ballot <i class="fa-solid fa-angles-right ml-1 text-amber-400"></i>';
+                if (icon) icon.className = 'fa-solid fa-stamp text-base pointer-events-none text-slate-950';
+            }
+
+            function initSlideSealListeners() {
+                const track = document.getElementById('seal-track');
+                const thumb = document.getElementById('seal-thumb');
+                const fill = document.getElementById('seal-fill');
+                const quickBtn = document.getElementById('btn-quick-verify');
+
+                if (!track || !thumb || !fill) return;
+
+                function updateTravel() {
+                    const trackRect = track.getBoundingClientRect();
+                    const thumbWidth = thumb.offsetWidth || 44;
+                    vault.maxTravel = Math.max(10, trackRect.width - thumbWidth - 12);
+                }
+
+                window.addEventListener('resize', updateTravel);
+                updateTravel();
+
+                thumb.addEventListener('pointerdown', (e) => {
+                    if (vault.isSubmitting) return;
+                    updateTravel();
+                    vault.isDragging = true;
+                    vault.dragStartX = e.clientX;
+                    thumb.setPointerCapture(e.pointerId);
+                });
+
+                window.addEventListener('pointermove', (e) => {
+                    if (!vault.isDragging || vault.isSubmitting) return;
+
+                    const deltaX = Math.max(0, Math.min(vault.maxTravel, e.clientX - vault.dragStartX));
+                    thumb.style.transform = `translateX(${deltaX}px)`;
+                    const pct = Math.min(100, (deltaX / vault.maxTravel) * 100);
+                    fill.style.width = `${pct}%`;
+
+                    if (pct >= 85) {
+                        vault.isDragging = false;
+                        commitBallotSubmission();
+                    }
+                });
+
+                const endDrag = () => {
+                    if (!vault.isDragging) return;
+                    vault.isDragging = false;
+                    if (!vault.isSubmitting) {
+                        resetSealSlider();
+                    }
+                };
+
+                window.addEventListener('pointerup', endDrag);
+                window.addEventListener('pointercancel', endDrag);
+
+                // Quick Verify Button (Accessible Fallback)
+                if (quickBtn) {
+                    quickBtn.addEventListener('click', () => {
+                        if (vault.isSubmitting) return;
+                        updateTravel();
+                        thumb.style.transition = 'transform 0.3s ease-out';
+                        fill.style.transition = 'width 0.3s ease-out';
+                        thumb.style.transform = `translateX(${vault.maxTravel}px)`;
+                        fill.style.width = '100%';
+                        setTimeout(() => {
+                            thumb.style.transition = 'none';
+                            fill.style.transition = 'none';
+                            commitBallotSubmission();
+                        }, 350);
+                    });
+                }
+            }
+
+            // =================================================================
+            // 8. ATOMIC BALLOT COMMITMENT (NODE OR LOCAL ENGINE)
+            // =================================================================
+            async function commitBallotSubmission() {
+                vault.isSubmitting = true;
+                const feedbackBox = document.getElementById('modal-feedback-box');
+                const instruction = document.getElementById('seal-instruction');
+                const icon = document.getElementById('seal-thumb-icon');
+
+                if (instruction) instruction.textContent = 'Computing Proof-of-Work...';
+                if (icon) icon.className = 'fa-solid fa-spinner animate-spin text-base pointer-events-none text-slate-950';
+
+                // 1. Honeypot check
+                const hpVal1 = document.getElementById('website')?.value || '';
+                const hpVal2 = document.getElementById('official_ballot_fax_number')?.value || '';
+                if (hpVal1.trim() !== '' || hpVal2.trim() !== '') {
+                    notify('Automated activity rejected.', 'error');
+                    vault.isSubmitting = false;
+                    closeBallotModal();
+                    return;
+                }
+
+                const candidate = vault.pendingCandidate;
+                const now = Date.now();
+
+                try {
+                    // MODE A: NODE SERVER INTEGRATION
+                    if (vault.backendType === 'node') {
+                        // 1. Get challenge token from server
+                        const chalRes = await fetch('/api/challenge', { cache: 'no-store' });
+                        if (!chalRes.ok) throw new Error('Challenge request failed.');
+                        const chalData = await chalRes.json();
+                        const { token, difficulty, minAgeMs } = chalData;
+
+                        // 2. Compute Proof-of-Work
+                        let nonce = 0;
+                        const targetPrefix = '0'.repeat(difficulty || 4);
+                        const t0 = Date.now();
+                        while (true) {
+                            const hash = sha256Sync(token + ':' + nonce);
+                            if (hash.startsWith(targetPrefix)) break;
+                            nonce++;
+                            if (nonce % 2000 === 0) {
+                                await new Promise(r => setTimeout(r, 0));
+                            }
+                        }
+
+                        // Respect minAgeMs if required
+                        const elapsed = Date.now() - t0;
+                        const waitTime = Math.max(0, (minAgeMs || 0) + 100 - elapsed);
+                        if (waitTime > 0) await new Promise(r => setTimeout(r, waitTime));
+
+                        // 3. Post verified ballot to Node server
+                        const voteRes = await fetch('/api/vote', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                choice: candidate,
+                                token,
+                                nonce: String(nonce),
+                                website: ''
+                            })
+                        });
+
+                        const voteData = await voteRes.json();
+                        if (!voteRes.ok) {
+                            throw new Error(voteData.error || 'Server rejected vote.');
+                        }
+
+                        vault.messiCount = voteData.messi;
+                        vault.ronaldoCount = voteData.ronaldo;
+                        const cd = voteData.cooldownMs || COOLDOWN_MS;
+                        vault.lockedUntil = now + cd;
+                        vault.lockedCandidate = candidate;
+                        if (typeof voteData.deadlineMs === 'number' && voteData.deadlineMs > 0) {
+                            vault.pollDeadlineMs = voteData.deadlineMs;
+                            try { localStorage.setItem(DEADLINE_KEY, String(voteData.deadlineMs)); } catch (_) {}
+                        }
+                    }
+
+                    // MODE B: LOCAL / DECENTRALIZED ENGINE
+                    else {
+                        // Compute local PoW receipt
+                        let nonce = 0;
+                        const salt = `TLR_BALLOT_${candidate}_${now}_`;
+                        while (true) {
+                            const hash = sha256Sync(salt + nonce);
+                            if (hash.startsWith('000')) break;
+                            nonce++;
+                            if (nonce % 1500 === 0) {
+                                await new Promise(r => setTimeout(r, 0));
+                            }
+                        }
+
+                        // Increment local count
+                        if (candidate === 'messi') vault.messiCount++;
+                        if (candidate === 'ronaldo') vault.ronaldoCount++;
+
+                        vault.lockedUntil = now + COOLDOWN_MS;
+                        vault.lockedCandidate = candidate;
+                        saveLocalState();
+                        broadcastState();
+                    }
+
+                    // Success actions
+                    vault.isSubmitting = false;
+                    closeBallotModal();
+                    renderStandingsUI();
+                    renderCooldownUI();
+                    triggerCelebration(candidate);
+                    appendLiveStreamItem(candidate);
+                    showReceiptModal(candidate);
+
+                } catch (err) {
+                    vault.isSubmitting = false;
+                    if (feedbackBox) {
+                        feedbackBox.textContent = err.message || 'Could not record ballot. Please try again.';
+                        feedbackBox.className = 'text-xs font-medium text-center py-2.5 px-3.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40';
+                        feedbackBox.classList.remove('hidden');
+                    }
+                    resetSealSlider();
+                }
+            }
+
+            // =================================================================
+            // 9. CELEBRATION, CONFETTI & CERTIFICATE MODAL
+            // =================================================================
+            function triggerCelebration(candidate) {
+                playAudioTone('chime');
+
+                if (typeof confetti === 'function') {
+                    const colors = candidate === 'messi' 
+                        ? ['#38bdf8', '#0ea5e9', '#d4af37', '#ffffff'] 
+                        : ['#f43f5e', '#e11d48', '#d4af37', '#ffffff'];
+
+                    confetti({
+                        particleCount: 80,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors
+                    });
+
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 50,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors
+                        });
+                        confetti({
+                            particleCount: 50,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors
+                        });
+                    }, 250);
+                }
+            }
+
+            function showReceiptModal(candidate) {
+                const serial = '#TLR-2026-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                vault.lastBallotReceipt = { candidate, serial, time: new Date().toLocaleTimeString() };
+
+                const modal = document.getElementById('receipt-modal');
+                const candEl = document.getElementById('receipt-candidate');
+                const serEl = document.getElementById('receipt-serial');
+                const timeEl = document.getElementById('receipt-time');
+
+                if (candEl) {
+                    candEl.textContent = candidate === 'messi' ? 'LIONEL MESSI (#10)' : 'CRISTIANO RONALDO (#7)';
+                    candEl.className = candidate === 'messi' ? 'text-sky-400 uppercase font-bold' : 'text-rose-400 uppercase font-bold';
+                }
+                if (serEl) serEl.textContent = serial;
+                if (timeEl) timeEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    trapFocus(modal, null);
+                }
+            }
+
+            function appendLiveStreamItem(candidate) {
+                const stream = document.getElementById('live-activity-stream');
+                if (!stream) return;
+                const div = document.createElement('div');
+                div.className = 'p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-between text-xs animate-pulse';
+                const name = candidate === 'messi' ? '<strong class="text-sky-300 font-bold">Lionel Messi (#10)</strong>' : '<strong class="text-rose-300 font-bold">Cristiano Ronaldo (#7)</strong>';
+                div.innerHTML = `<span class="text-amber-100 font-medium">Your verified ballot for ${name} was recorded in ledger</span><span class="text-[11px] text-amber-300 font-mono font-bold shrink-0 ml-2">Just Now ✓</span>`;
+                stream.prepend(div);
+                while (stream.children.length > 8) {
+                    stream.removeChild(stream.lastChild);
+                }
+            }
+
+            // Dynamic live activity stream generator
+            const CITIES_POOL = [
+                'Buenos Aires, AR', 'Rosario, AR', 'Lisbon, PT', 'Funchal, PT',
+                'Madrid, ES', 'Barcelona, ES', 'Manchester, UK', 'London, UK',
+                'Milan, IT', 'Turin, IT', 'Paris, FR', 'Riyadh, SA', 'Miami, US',
+                'Rio de Janeiro, BR', 'São Paulo, BR', 'Munich, DE', 'Amsterdam, NL',
+                'Dortmund, DE', 'Bogotá, CO', 'Cairo, EG', 'Lagos, NG', 'Tokyo, JP',
+                'Rome, IT', 'Naples, IT', 'Porto, PT', 'Montevideo, UY'
+            ];
+            const TIME_AGO_POOL = ['3s ago', '7s ago', '12s ago', '18s ago', '25s ago', '38s ago', '52s ago', '1m ago'];
+
+            function generateFakeStreamItem() {
+                const stream = document.getElementById('live-activity-stream');
+                if (!stream) return;
+
+                const city = CITIES_POOL[Math.floor(Math.random() * CITIES_POOL.length)];
+                const timeAgo = TIME_AGO_POOL[Math.floor(Math.random() * TIME_AGO_POOL.length)];
+
+                // Weight candidate choice by current vote ratio
+                const m = vault.messiCount;
+                const r = vault.ronaldoCount;
+                const total = m + r;
+                let candidate = 'messi';
+                if (total > 0) {
+                    candidate = Math.random() < (m / total) ? 'messi' : 'ronaldo';
+                } else {
+                    candidate = Math.random() < 0.5 ? 'messi' : 'ronaldo';
+                }
+
+                const div = document.createElement('div');
+                div.className = 'p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between text-xs transition-all duration-300';
+                const candMarkup = candidate === 'messi'
+                    ? '<strong class="text-sky-400 font-bold">Lionel Messi (#10)</strong>'
+                    : '<strong class="text-rose-400 font-bold">Cristiano Ronaldo (#7)</strong>';
+                div.innerHTML = `<span class="text-slate-300">Verified voter in <span class="text-slate-100 font-semibold">${city}</span> cast ballot for ${candMarkup}</span><span class="text-[11px] text-slate-400 font-mono shrink-0 ml-2">${timeAgo}</span>`;
+
+                stream.prepend(div);
+                while (stream.children.length > 8) {
+                    stream.removeChild(stream.lastChild);
+                }
+            }
+
+            function spawnStreamLoop() {
+                generateFakeStreamItem();
+                const delay = 8000 + Math.random() * 7000;
+                setTimeout(spawnStreamLoop, delay);
+            }
+
+            // =================================================================
+            // 10. UI RENDERING (SCOREBOARD, PERCENTAGES & TUG-OF-WAR BAR)
+            // =================================================================
+            let prevM = -1, prevR = -1;
+
+            function triggerCountUpAnimation(element) {
+                if (!element) return;
+                element.classList.remove('num-animate');
+                void element.offsetWidth; // Force reflow
+                element.classList.add('num-animate');
+            }
+
+            function renderStandingsUI() {
+                const m = vault.messiCount;
+                const r = vault.ronaldoCount;
+                const total = m + r;
+
+                const mPct = total > 0 ? ((m / total) * 100).toFixed(1) : '0.0';
+                const rPct = total > 0 ? ((r / total) * 100).toFixed(1) : '0.0';
+
+                const barWidthM = total > 0 ? Math.max(2, Math.min(98, (m / total) * 100)).toFixed(1) : '50';
+                const barWidthR = (100 - parseFloat(barWidthM)).toFixed(1);
+
+                const totalEl = document.getElementById('total-ballots-count');
+                const cardM = document.getElementById('card-messi-votes');
+                const cardR = document.getElementById('card-ronaldo-votes');
+
+                if (totalEl) totalEl.textContent = total.toLocaleString();
+                if (cardM) {
+                    cardM.textContent = m.toLocaleString();
+                    if (prevM !== -1 && prevM !== m) triggerCountUpAnimation(cardM);
+                }
+                if (cardR) {
+                    cardR.textContent = r.toLocaleString();
+                    if (prevR !== -1 && prevR !== r) triggerCountUpAnimation(cardR);
+                }
+
+                prevM = m;
+                prevR = r;
+
+                const barMPct = document.getElementById('bar-messi-percent');
+                const barRPct = document.getElementById('bar-ronaldo-percent');
+                if (barMPct) barMPct.textContent = `${mPct}%`;
+                if (barRPct) barRPct.textContent = `${rPct}%`;
+
+                const barMVotes = document.getElementById('bar-messi-votes');
+                const barRVotes = document.getElementById('bar-ronaldo-votes');
+                if (barMVotes) barMVotes.textContent = `(${m.toLocaleString()} ${m === 1 ? 'vote' : 'votes'})`;
+                if (barRVotes) barRVotes.textContent = `(${r.toLocaleString()} ${r === 1 ? 'vote' : 'votes'})`;
+
+                const splitM = document.getElementById('split-bar-messi');
+                const splitR = document.getElementById('split-bar-ronaldo');
+                if (splitM) splitM.style.width = `${barWidthM}%`;
+                if (splitR) splitR.style.width = `${barWidthR}%`;
+
+                const statusPill = document.getElementById('standings-status-pill');
+                if (statusPill) {
+                    if (total === 0) {
+                        statusPill.textContent = 'Polls Open — Awaiting First Verified Ballot (0 - 0)';
+                        statusPill.className = 'px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-amber-300 text-center transition-all';
+                    } else if (m > r) {
+                        const lead = (m - r).toLocaleString();
+                        statusPill.textContent = `Lionel Messi Leads by +${lead} ${m - r === 1 ? 'Vote' : 'Votes'}`;
+                        statusPill.className = 'px-4 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-xs font-mono text-sky-300 text-center transition-all';
+                    } else if (r > m) {
+                        const lead = (r - m).toLocaleString();
+                        statusPill.textContent = `Cristiano Ronaldo Leads by +${lead} ${r - m === 1 ? 'Vote' : 'Votes'}`;
+                        statusPill.className = 'px-4 py-1.5 rounded-full bg-rose-500/15 border border-rose-400/30 text-xs font-mono text-rose-300 text-center transition-all';
+                    } else {
+                        statusPill.textContent = `Dead Heat — Tied at ${m.toLocaleString()} Votes Each`;
+                        statusPill.className = 'px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-xs font-mono text-amber-300 text-center transition-all';
+                    }
+                }
+            }
+
+            function formatHHMMSS(ms) {
+                const totalSecs = Math.max(0, Math.floor(ms / 1000));
+                const hrs = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
+                const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
+                const secs = String(totalSecs % 60).padStart(2, '0');
+                return `${hrs}:${mins}:${secs}`;
+            }
+
+            function renderCooldownUI() {
+                const now = Date.now();
+                const banner = document.getElementById('voter-cooldown-banner');
+                const timerEl = document.getElementById('cooldown-timer-display');
+                const pillEl = document.getElementById('cooldown-backed-pill');
+                const btnMessi = document.getElementById('btn-vote-messi');
+                const btnRonaldo = document.getElementById('btn-vote-ronaldo');
+                const lblMessi = document.getElementById('btn-vote-messi-label');
+                const lblRonaldo = document.getElementById('btn-vote-ronaldo-label');
+
+                if (now >= vault.pollDeadlineMs) {
+                    if (banner) banner.classList.add('hidden');
+                    if (btnMessi) btnMessi.disabled = true;
+                    if (btnRonaldo) btnRonaldo.disabled = true;
+                    if (lblMessi) lblMessi.textContent = 'Official Poll Concluded';
+                    if (lblRonaldo) lblRonaldo.textContent = 'Official Poll Concluded';
+                    return;
+                }
+
+                if (now < vault.lockedUntil) {
+                    const rem = vault.lockedUntil - now;
+                    const clockStr = formatHHMMSS(rem);
+                    if (banner) banner.classList.remove('hidden');
+                    if (timerEl) timerEl.textContent = clockStr;
+
+                    const backedName = vault.lockedCandidate === 'ronaldo' ? 'Cristiano Ronaldo (#7)' : 'Lionel Messi (#10)';
+                    if (pillEl) pillEl.textContent = `Backed: ${backedName}`;
+
+                    if (btnMessi) btnMessi.disabled = true;
+                    if (btnRonaldo) btnRonaldo.disabled = true;
+                    if (lblMessi) lblMessi.textContent = `Cooldown Active (${clockStr})`;
+                    if (lblRonaldo) lblRonaldo.textContent = `Cooldown Active (${clockStr})`;
+                } else {
+                    if (banner) banner.classList.add('hidden');
+                    if (btnMessi) btnMessi.disabled = false;
+                    if (btnRonaldo) btnRonaldo.disabled = false;
+                    if (lblMessi) lblMessi.textContent = 'Cast Official Ballot For Messi';
+                    if (lblRonaldo) lblRonaldo.textContent = 'Cast Official Ballot For Ronaldo';
+                }
+            }
+
+            function renderNineDayDeadlineClock() {
+                const now = Date.now();
+                const rem = Math.max(0, vault.pollDeadlineMs - now);
+
+                const totalSecs = Math.floor(rem / 1000);
+                const days = Math.floor(totalSecs / 86400);
+                const hours = Math.floor((totalSecs % 86400) / 3600);
+                const mins = Math.floor((totalSecs % 3600) / 60);
+                const secs = totalSecs % 60;
+
+                const dEl = document.getElementById('cd-days');
+                const hEl = document.getElementById('cd-hours');
+                const mEl = document.getElementById('cd-mins');
+                const sEl = document.getElementById('cd-secs');
+
+                if (dEl) dEl.textContent = String(days).padStart(2, '0');
+                if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+                if (mEl) mEl.textContent = String(mins).padStart(2, '0');
+                if (sEl) sEl.textContent = String(secs).padStart(2, '0');
+
+                if (rem <= 0) {
+                    const st = document.getElementById('deadline-status-label');
+                    if (st) st.textContent = 'Referendum Concluded';
+                    renderCooldownUI();
+                }
+            }
+
+            // =================================================================
+            // 11. TOAST NOTIFICATIONS
+            // =================================================================
+            function notify(message, type = 'info') {
+                const stack = document.getElementById('toast-stack');
+                if (!stack) return;
+                const item = document.createElement('div');
+
+                let styleClass = 'bg-charcoal/95 border-white/15 text-slate-200';
+                let iconClass = 'fa-circle-info text-amber-400';
+
+                if (type === 'success') {
+                    styleClass = 'bg-emerald-950/95 border-emerald-500/40 text-emerald-100';
+                    iconClass = 'fa-circle-check text-emerald-400';
+                } else if (type === 'error') {
+                    styleClass = 'bg-rose-950/95 border-rose-500/40 text-rose-100';
+                    iconClass = 'fa-shield-halved text-rose-400';
+                } else if (type === 'warning') {
+                    styleClass = 'bg-amber-950/95 border-amber-500/40 text-amber-100';
+                    iconClass = 'fa-clock text-amber-400';
+                }
+
+                item.className = `pointer-events-auto p-4 rounded-2xl border shadow-2xl backdrop-blur-xl flex items-start gap-3 text-xs font-medium transition-all duration-300 ${styleClass}`;
+                item.innerHTML = `
+                    <i class="fa-solid ${iconClass} text-base mt-0.5 shrink-0"></i>
+                    <div class="flex-1 leading-relaxed">${message}</div>
+                `;
+
+                stack.appendChild(item);
+                setTimeout(() => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(8px)';
+                    setTimeout(() => item.remove(), 300);
+                }, 4000);
+            }
+
+            // =================================================================
+            // 12. VIRAL SHARE HANDLERS & MODAL CLOSE BINDINGS
+            // =================================================================
+            function initShareHandlers() {
+                const shareModal = document.getElementById('share-modal');
+                const btnOpenShare = document.getElementById('btn-open-share');
+                const btnCloseShare = document.getElementById('btn-close-share');
+
+                if (btnOpenShare) {
+                    btnOpenShare.addEventListener('click', () => {
+                        playAudioTone('click');
+                        if (navigator.share) {
+                            navigator.share({
+                                title: 'THE TOUCHLINE REFERENDUM | Messi vs Ronaldo',
+                                text: 'Cast your official verified public ballot in the Messi vs Ronaldo GOAT referendum! No bots, 4-hour cooldown.',
+                                url: window.location.href
+                            }).catch(() => {
+                                if (shareModal) {
+                                    shareModal.classList.remove('hidden');
+                                    trapFocus(shareModal, btnOpenShare);
+                                }
+                            });
+                        } else {
+                            if (shareModal) {
+                                shareModal.classList.remove('hidden');
+                                trapFocus(shareModal, btnOpenShare);
+                            }
+                        }
+                    });
+                }
+
+                if (btnCloseShare) {
+                    btnCloseShare.addEventListener('click', closeShareModal);
+                }
+
+                const shareText = encodeURIComponent('I just cast my verified vote in The Touchline Referendum: Lionel Messi vs. Cristiano Ronaldo. The definitive public football ballot is live!');
+                const shareUrl = encodeURIComponent(window.location.href);
+
+                document.getElementById('share-btn-x')?.addEventListener('click', () => {
+                    window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
+                });
+
+                document.getElementById('share-btn-wa')?.addEventListener('click', () => {
+                    window.open(`https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`, '_blank');
+                });
+
+                document.getElementById('share-btn-tg')?.addEventListener('click', () => {
+                    window.open(`https://t.me/share/url?url=${shareUrl}&text=${shareText}`, '_blank');
+                });
+
+                document.getElementById('share-btn-copy')?.addEventListener('click', () => {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        notify('Referendum link copied to clipboard!', 'success');
+                        closeShareModal();
+                    });
+                });
+
+                // Receipt buttons
+                document.getElementById('btn-close-receipt')?.addEventListener('click', closeReceiptModal);
+
+                document.getElementById('btn-receipt-share-x')?.addEventListener('click', () => {
+                    const candidateName = vault.lastBallotReceipt?.candidate === 'messi' ? 'Lionel Messi (#10)' : 'Cristiano Ronaldo (#7)';
+                    const tweet = encodeURIComponent(`I just cast my official verified ballot for ${candidateName} in The Touchline Referendum! Vote here: `);
+                    window.open(`https://twitter.com/intent/tweet?text=${tweet}&url=${shareUrl}`, '_blank');
+                });
+
+                document.getElementById('btn-receipt-copy')?.addEventListener('click', () => {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        notify('Ballot link copied to clipboard!', 'success');
+                    });
+                });
+
+                // Backdrop Click to Close Handlers
+                document.getElementById('ballot-modal')?.addEventListener('click', (e) => {
+                    if (e.target.id === 'ballot-modal' && !vault.isSubmitting) {
+                        closeBallotModal();
+                    }
+                });
+
+                document.getElementById('receipt-modal')?.addEventListener('click', (e) => {
+                    if (e.target.id === 'receipt-modal') {
+                        closeReceiptModal();
+                    }
+                });
+
+                document.getElementById('share-modal')?.addEventListener('click', (e) => {
+                    if (e.target.id === 'share-modal') {
+                        closeShareModal();
+                    }
+                });
+
+                // Global Escape Key Listener
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        closeBallotModal();
+                        closeReceiptModal();
+                        closeShareModal();
+                    }
+                });
+            }
+
+            // =================================================================
+            // 13. SOUND TOGGLE HANDLER
+            // =================================================================
+            function initSoundToggle() {
+                const btn = document.getElementById('btn-toggle-sound');
+                const icon = document.getElementById('sound-icon');
+                if (!btn || !icon) return;
+
+                function updateIcon() {
+                    if (vault.soundEnabled) {
+                        icon.className = 'fa-solid fa-volume-high';
+                        btn.classList.add('text-amber-300');
+                    } else {
+                        icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+                        btn.classList.remove('text-amber-300');
+                    }
+                }
+                updateIcon();
+
+                btn.addEventListener('click', () => {
+                    vault.soundEnabled = !vault.soundEnabled;
+                    localStorage.setItem('tlr_sound', vault.soundEnabled ? '1' : '0');
+                    updateIcon();
+                    if (vault.soundEnabled) playAudioTone('click');
+                });
+            }
+
+            // =================================================================
+            // 14. BOOTSTRAP APPLICATION
+            // =================================================================
+            window.addEventListener('DOMContentLoaded', async () => {
+                initPortraitFallbacks();
+                initSoundToggle();
+                initShareHandlers();
+                initSlideSealListeners();
+                initBroadcast();
+
+                // Button bindings
+                const btnMessi = document.getElementById('btn-vote-messi');
+                const btnRonaldo = document.getElementById('btn-vote-ronaldo');
+                btnMessi?.addEventListener('click', () => openBallotModal('messi', btnMessi));
+                btnRonaldo?.addEventListener('click', () => openBallotModal('ronaldo', btnRonaldo));
+                document.getElementById('btn-close-modal')?.addEventListener('click', closeBallotModal);
+
+                // Auto-detect backend (Node / Firebase / Local)
+                await detectBackend();
+
+                renderStandingsUI();
+                renderNineDayDeadlineClock();
+                renderCooldownUI();
+
+                // Seed initial dynamic live stream items
+                generateFakeStreamItem();
+                generateFakeStreamItem();
+                spawnStreamLoop();
+
+                // Heartbeat interval for clocks & cooldown timer
+                setInterval(() => {
+                    renderNineDayDeadlineClock();
+                    renderCooldownUI();
+                }, 1000);
+            });
+
+        })();
+    </script>
+</body>
+</html>
