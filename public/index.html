@@ -6,7 +6,7 @@
     <title>THE TOUCHLINE REFERENDUM | Lionel Messi vs. Cristiano Ronaldo — Official Public Poll</title>
     
     <!-- SEO & Open Graph Metadata -->
-    <meta name="description" content="The definitive, unfiltered global football ballot. Vote between Lionel Messi and Cristiano Ronaldo in The Touchline Referendum. Zero bots, 4-hour cooldown, 9-day official window.">
+    <meta name="description" content="The definitive, unfiltered global football ballot. Vote between Lionel Messi and Cristiano Ronaldo in The Touchline Referendum. Zero bots, strict 1-vote lifetime limit per device, 9-day official window.">
     <meta name="keywords" content="Messi vs Ronaldo, GOAT vote counter, Ballon d'Or, Football poll, Touchline Referendum, Messi, Ronaldo, CR7">
     <meta property="og:title" content="THE TOUCHLINE REFERENDUM | Lionel Messi vs. Cristiano Ronaldo">
     <meta property="og:description" content="Cast your official verified public ballot in the Messi vs Ronaldo GOAT referendum. No PR lobbies, no bots. Live 9-day public poll.">
@@ -256,7 +256,7 @@
             <span class="text-slate-600">•</span>
             <span class="hidden sm:inline">Cryptographic SHA-256 Proof-of-Work</span>
             <span class="hidden sm:inline text-slate-600">•</span>
-            <span>Strict 4-Hour Voter Cooldown</span>
+            <span>Strict 1-Vote Limit Per Device</span>
             <span class="text-slate-600">•</span>
             <span id="backend-status-badge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -428,7 +428,7 @@
                         </div>
                     </div>
 
-                    <!-- ACTIVE 4-HOUR COOLDOWN BANNER (INSIDE SCOREBOARD ON LG) -->
+                    <!-- OFFICIAL VOTER STATUS BANNER (PERMANENT SINGLE-BALLOT ENFORCEMENT) -->
                     <div id="voter-cooldown-banner" class="hidden rounded-2xl p-4 bg-amber-950/40 border border-amber-500/40 backdrop-blur-md transition-all duration-300">
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                             <div class="flex items-center gap-3.5 text-center sm:text-left">
@@ -437,21 +437,21 @@
                                 </div>
                                 <div>
                                     <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                                        <span class="text-xs font-mono uppercase tracking-wider text-amber-300 font-bold">
-                                            Official Ballot Recorded
+                                        <span class="text-sm font-mono uppercase tracking-wider text-amber-300 font-extrabold">
+                                            Your chance ran out
                                         </span>
-                                        <span id="cooldown-backed-pill" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
-                                            Verified
+                                        <span id="cooldown-backed-pill" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">
+                                            Ballot Sealed
                                         </span>
                                     </div>
-                                    <p class="text-xs text-slate-300 mt-1">
-                                        Cooldown active. You can vote again once your 4-hour window resets.
+                                    <p id="cooldown-banner-subtext" class="text-xs text-slate-300 mt-1">
+                                        You have already sealed your official referendum ballot. Each device is strictly permitted only one vote in this referendum.
                                     </p>
                                 </div>
                             </div>
                             <div class="bg-obsidian/90 border border-amber-500/30 rounded-xl px-4 py-2 text-center shrink-0">
-                                <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-400">Next Ballot In</span>
-                                <span id="cooldown-timer-display" class="font-mono font-extrabold text-xl text-amber-400 tracking-wider">04:00:00</span>
+                                <span class="block text-[11px] font-mono uppercase tracking-wider text-slate-400">Referendum Status</span>
+                                <span class="font-mono font-extrabold text-sm text-amber-400 tracking-wider">Ballot Finalized</span>
                             </div>
                         </div>
                     </div>
@@ -474,7 +474,7 @@
                     </p>
 
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                        This is the unfiltered public referendum. Both contenders begin at zero. Every single vote requires cryptographic proof-of-work and is bound to a verified 4-hour window until the 9-day countdown closes.
+                        This is the unfiltered public referendum. Both contenders begin at zero. Every single vote requires cryptographic proof-of-work and is bound to a strict 1-vote limit per device until the 9-day countdown closes.
                     </p>
 
                     <div class="pt-2 flex items-center gap-3 text-xs font-mono text-slate-300">
@@ -780,9 +780,9 @@
                         <i class="fa-solid fa-hourglass-half text-sm"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">4-Hour Cooldown Window</h3>
+                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">Lifetime Single-Ballot Security</h3>
                         <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                            No spam voting. Once your ballot is cast, your device and network enter a mandatory 4-hour cooldown enforced globally and mirrored locally.
+                            Strict 1 vote per device. Once your ballot is cast, your chance runs out permanently. The official public ledger locks your device from submitting duplicate votes.
                         </p>
                     </div>
                 </div>
@@ -812,7 +812,7 @@
                 THE TOUCHLINE REFERENDUM • PUBLIC FOOTBALL BALLOT
             </p>
             <p class="text-[11px] text-slate-400 font-mono">
-                SHA-256 Proof-of-Work • 4-Hour Cooldown • 9-Day Window • Deployment Ready
+                SHA-256 Proof-of-Work • 1-Vote Limit Per Device • 9-Day Window • Official Ledger
             </p>
         </div>
     </footer>
@@ -865,7 +865,7 @@
                 </div>
 
                 <div class="flex justify-between items-center text-[11px] font-mono text-slate-300 px-1">
-                    <span>One Vote Per 4-Hour Window</span>
+                    <span>One Lifetime Ballot Per Device</span>
                     <button id="btn-quick-verify" type="button" class="min-h-[44px] py-2 text-amber-300 hover:text-amber-200 underline cursor-pointer font-semibold" aria-label="Auto-verify and cast ballot">
                         Tap here to auto-slide
                     </button>
@@ -1002,11 +1002,11 @@
 
             // Internal Encapsulated State
             const vault = {
-                backendType: 'local', // 'node' | 'firebase' | 'local'
+                backendType: 'node',
                 messiCount: 0,
                 ronaldoCount: 0,
-                lockedUntil: 0,
-                lockedCandidate: null,
+                hasVoted: false,
+                backedCandidate: null,
                 pollDeadlineMs: initPollDeadline(),
                 soundEnabled: localStorage.getItem('tlr_sound') !== '0',
                 audioCtx: null,
@@ -1014,6 +1014,8 @@
                 pendingCandidate: null,
                 broadcastChannel: null,
                 lastBallotReceipt: null,
+                deviceId: null,
+                syncTimer: null,
                 // Slider state
                 isDragging: false,
                 dragStartX: 0,
@@ -1320,14 +1322,78 @@
             }
 
             // =================================================================
-            // 4. PERSISTENT STORAGE LAYER (LOCALSTORAGE & INDEXEDDB)
+            // 4. PERSISTENT STORAGE LAYER (LOCALSTORAGE & DURABLE DEVICE ID)
             // =================================================================
+            function getCookie(name) {
+                try {
+                    const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'));
+                    return match ? decodeURIComponent(match[2]) : null;
+                } catch (_) { return null; }
+            }
+
+            function setCookie(name, value, days = 3650) {
+                try {
+                    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+                    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+                } catch (_) {}
+            }
+
+            function getDeviceId() {
+                if (vault.deviceId) return vault.deviceId;
+                let id = null;
+                try { id = localStorage.getItem('tlr_device_uuid'); } catch (_) {}
+                if (!id) id = getCookie('tlr_device_uuid');
+                if (!id || id.length < 8) {
+                    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                        id = crypto.randomUUID();
+                    } else {
+                        id = 'dev_' + Math.random().toString(36).substring(2, 12) + Date.now().toString(36);
+                    }
+                }
+                try { localStorage.setItem('tlr_device_uuid', id); } catch (_) {}
+                setCookie('tlr_device_uuid', id);
+                vault.deviceId = id;
+                return id;
+            }
+
+            function restoreLocalVoterState() {
+                let hasVoted = false;
+                let cand = null;
+                try {
+                    if (localStorage.getItem('tlr_has_voted') === '1') {
+                        hasVoted = true;
+                        cand = localStorage.getItem('tlr_backed_candidate');
+                    }
+                } catch (_) {}
+
+                if (!hasVoted && getCookie('tlr_has_voted') === '1') {
+                    hasVoted = true;
+                    cand = getCookie('tlr_backed_candidate');
+                }
+
+                if (hasVoted) {
+                    vault.hasVoted = true;
+                    if (cand) vault.backedCandidate = cand;
+                }
+            }
+
+            function persistVoterState(candidate) {
+                vault.hasVoted = true;
+                if (candidate) vault.backedCandidate = candidate;
+                try {
+                    localStorage.setItem('tlr_has_voted', '1');
+                    if (candidate) localStorage.setItem('tlr_backed_candidate', candidate);
+                } catch (_) {}
+                setCookie('tlr_has_voted', '1');
+                if (candidate) setCookie('tlr_backed_candidate', candidate);
+            }
+
             function getLocalState() {
                 try {
                     const stored = localStorage.getItem('tlr_state_v2');
                     if (stored) return JSON.parse(stored);
                 } catch (_) {}
-                return { messi: 0, ronaldo: 0, lockedUntil: 0, lockedCandidate: null };
+                return { messi: 0, ronaldo: 0, hasVoted: false, backedCandidate: null };
             }
 
             function saveLocalState(st) {
@@ -1335,8 +1401,8 @@
                     localStorage.setItem('tlr_state_v2', JSON.stringify({
                         messi: vault.messiCount,
                         ronaldo: vault.ronaldoCount,
-                        lockedUntil: vault.lockedUntil,
-                        lockedCandidate: vault.lockedCandidate,
+                        hasVoted: vault.hasVoted,
+                        backedCandidate: vault.backedCandidate,
                         ...st
                     }));
                 } catch (_) {}
@@ -1355,12 +1421,11 @@
                             if (type === 'STATE_UPDATE') {
                                 vault.messiCount = payload.messi;
                                 vault.ronaldoCount = payload.ronaldo;
-                                if (payload.lockedUntil > vault.lockedUntil) {
-                                    vault.lockedUntil = payload.lockedUntil;
-                                    vault.lockedCandidate = payload.lockedCandidate;
+                                if (payload.hasVoted) {
+                                    persistVoterState(payload.backedCandidate);
                                 }
                                 renderStandingsUI();
-                                renderCooldownUI();
+                                renderVoterStatusUI();
                             }
                         };
                     }
@@ -1375,8 +1440,8 @@
                             payload: {
                                 messi: vault.messiCount,
                                 ronaldo: vault.ronaldoCount,
-                                lockedUntil: vault.lockedUntil,
-                                lockedCandidate: vault.lockedCandidate
+                                hasVoted: vault.hasVoted,
+                                backedCandidate: vault.backedCandidate
                             }
                         });
                     } catch (_) {}
@@ -1384,27 +1449,28 @@
             }
 
             // =================================================================
-            // 6. BACKEND AUTO-DISCOVERY & CONNECTION
+            // 6. BACKEND AUTO-DISCOVERY & REAL-TIME SYNCHRONIZATION
             // =================================================================
             async function detectBackend() {
                 const badgeEl = document.getElementById('backend-status-badge');
                 const textEl = document.getElementById('backend-status-text');
 
-                // 1. Always restore verified local state first (cooldown & counts)
+                // 1. Restore verified local state immediately
+                restoreLocalVoterState();
                 const local = getLocalState();
                 if (local) {
                     if (typeof local.messi === 'number') vault.messiCount = Math.max(vault.messiCount, local.messi);
                     if (typeof local.ronaldo === 'number') vault.ronaldoCount = Math.max(vault.ronaldoCount, local.ronaldo);
-                    if (local.lockedUntil && local.lockedUntil > Date.now()) {
-                        vault.lockedUntil = local.lockedUntil;
-                        vault.lockedCandidate = local.lockedCandidate;
+                    if (local.hasVoted) {
+                        vault.hasVoted = true;
+                        if (local.backedCandidate) vault.backedCandidate = local.backedCandidate;
                     }
                 }
                 renderStandingsUI();
-                renderCooldownUI();
+                renderVoterStatusUI();
                 renderNineDayDeadlineClock();
 
-                // 2. Default to Node/Vercel serverless mode and sync
+                // 2. Sync with high-speed production ledger
                 vault.backendType = 'node';
                 await pollNodeState();
 
@@ -1417,11 +1483,16 @@
             async function pollNodeState() {
                 const badgeEl = document.getElementById('backend-status-badge');
                 const textEl = document.getElementById('backend-status-text');
+                const deviceId = getDeviceId();
 
                 try {
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 8000);
-                    const res = await fetch('/api/state', { cache: 'no-store', signal: controller.signal });
+                    const timeoutId = setTimeout(() => controller.abort(), 6000);
+                    const res = await fetch('/api/state?deviceId=' + encodeURIComponent(deviceId), {
+                        cache: 'no-store',
+                        signal: controller.signal,
+                        headers: { 'X-Device-Id': deviceId }
+                    });
                     clearTimeout(timeoutId);
 
                     if (res.ok) {
@@ -1429,7 +1500,7 @@
                         vault.backendType = 'node';
 
                         if (badgeEl && textEl) {
-                            textEl.textContent = 'Node Server Synced';
+                            textEl.textContent = 'Real-Time Ledger Synced';
                             badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]';
                         }
 
@@ -1442,12 +1513,8 @@
                             vault.ronaldoCount = Math.max(vault.ronaldoCount, data.ronaldo);
                             changed = true;
                         }
-                        if (data.cooldownMs && data.cooldownMs > 0) {
-                            const srvLock = Date.now() + data.cooldownMs;
-                            if (srvLock > vault.lockedUntil) {
-                                vault.lockedUntil = srvLock;
-                                changed = true;
-                            }
+                        if (data.hasVoted) {
+                            persistVoterState(data.backedCandidate || vault.backedCandidate);
                         }
                         if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
                             vault.pollDeadlineMs = data.deadlineMs;
@@ -1460,51 +1527,15 @@
                             saveLocalState();
                             renderStandingsUI();
                         }
-                        renderCooldownUI();
+                        renderVoterStatusUI();
                         return;
                     }
                 } catch (err) {
-                    // Ephemeral cold-start delay or network jitter: maintain active sync polling
+                    // Ephemeral cold start or network jitter: preserve active polling
                     if (badgeEl && textEl && vault.backendType === 'node') {
                         textEl.textContent = 'Syncing Real-Time Ledger...';
                         badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold text-[11px] animate-pulse';
                     }
-                }
-            }
-                        }
-                        renderCooldownUI();
-                    }
-                } catch (_) {}
-            }
-
-            async function initFirebaseLedger() {
-                try {
-                    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
-                    const { getAuth, signInAnonymously } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-                    const { getFirestore, doc, onSnapshot, setDoc, getDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-
-                    const config = JSON.parse(window.__firebase_config);
-                    const app = initializeApp(config);
-                    const auth = getAuth(app);
-                    const db = getFirestore(app);
-
-                    await signInAnonymously(auth);
-                    vault.db = db;
-                    vault.uid = auth.currentUser ? auth.currentUser.uid : 'anon';
-
-                    const docRef = doc(db, 'referendum', 'public_counts');
-                    onSnapshot(docRef, (snap) => {
-                        if (snap.exists()) {
-                            const d = snap.data();
-                            if (typeof d.messi === 'number') vault.messiCount = d.messi;
-                            if (typeof d.ronaldo === 'number') vault.ronaldoCount = d.ronaldo;
-                            renderStandingsUI();
-                        }
-                    });
-                } catch (err) {
-                    console.warn('Firebase connection failed, switching to local ledger:', err);
-                    vault.backendType = 'local';
-                    renderStandingsUI();
                 }
             }
 
@@ -1519,9 +1550,9 @@
                     return;
                 }
 
-                if (Date.now() < vault.lockedUntil) {
-                    notify('Your 4-hour voter cooldown is currently active.', 'warning');
-                    renderCooldownUI();
+                if (vault.hasVoted) {
+                    notify('Your chance ran out. Only 1 vote per device is permitted.', 'warning');
+                    renderVoterStatusUI();
                     return;
                 }
 
@@ -1656,7 +1687,7 @@
             }
 
             // =================================================================
-            // 8. ATOMIC BALLOT COMMITMENT (NODE OR LOCAL ENGINE)
+            // 8. ATOMIC BALLOT COMMITMENT (ONE LIFETIME VOTE PER DEVICE)
             // =================================================================
             async function commitBallotSubmission() {
                 vault.isSubmitting = true;
@@ -1677,88 +1708,92 @@
                     return;
                 }
 
+                // 2. Pre-check if already voted
+                if (vault.hasVoted) {
+                    vault.isSubmitting = false;
+                    if (feedbackBox) {
+                        feedbackBox.textContent = 'Your chance ran out.';
+                        feedbackBox.className = 'text-xs font-medium text-center py-2.5 px-3.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                        feedbackBox.classList.remove('hidden');
+                    }
+                    renderVoterStatusUI();
+                    resetSealSlider();
+                    return;
+                }
+
                 const candidate = vault.pendingCandidate;
                 const now = Date.now();
+                const deviceId = getDeviceId();
                 let nonce = '';
 
                 try {
-                    // MODE A: NODE SERVER INTEGRATION
-                    if (vault.backendType === 'node') {
-                        // 1. Get challenge token from server
-                        const chalRes = await fetch('/api/challenge', { cache: 'no-store' });
-                        if (!chalRes.ok) throw new Error('Challenge request failed.');
-                        const chalData = await chalRes.json();
-                        const { token, difficulty, minAgeMs } = chalData;
+                    // 1. Get challenge token from server
+                    const chalRes = await fetch('/api/challenge', { cache: 'no-store' });
+                    if (!chalRes.ok) throw new Error('Challenge request failed.');
+                    const chalData = await chalRes.json();
+                    const { token, difficulty, minAgeMs } = chalData;
 
-                        // 2. Compute Proof-of-Work with standard SHA-256
-                        const t0 = Date.now();
-                        nonce = await solveProofOfWork(token + ':', difficulty || 4);
+                    // 2. Compute Proof-of-Work with standard SHA-256
+                    const t0 = Date.now();
+                    nonce = await solveProofOfWork(token + ':', difficulty || 4);
 
-                        // Respect minAgeMs if required
-                        const elapsed = Date.now() - t0;
-                        const waitTime = Math.max(0, (minAgeMs || 0) + 100 - elapsed);
-                        if (waitTime > 0) await new Promise(r => setTimeout(r, waitTime));
+                    // Respect minAgeMs if required
+                    const elapsed = Date.now() - t0;
+                    const waitTime = Math.max(0, (minAgeMs || 0) + 100 - elapsed);
+                    if (waitTime > 0) await new Promise(r => setTimeout(r, waitTime));
 
-                        // 3. Post verified ballot to Node server
-                        const voteRes = await fetch('/api/vote', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                choice: candidate,
-                                token,
-                                nonce,
-                                website: ''
-                            })
-                        });
+                    // 3. Post verified ballot to server
+                    const voteRes = await fetch('/api/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Device-Id': deviceId
+                        },
+                        body: JSON.stringify({
+                            choice: candidate,
+                            token,
+                            nonce,
+                            deviceId,
+                            website: ''
+                        })
+                    });
 
-                        const voteData = await voteRes.json();
-                        if (!voteRes.ok) {
-                            throw new Error(voteData.error || 'Server rejected vote.');
+                    const voteData = await voteRes.json();
+                    if (!voteRes.ok) {
+                        if (voteRes.status === 403 && (voteData.hasVoted || (voteData.error && voteData.error.includes('chance')))) {
+                            persistVoterState(voteData.backedCandidate || candidate);
+                            renderVoterStatusUI();
+                            throw new Error('Your chance ran out.');
                         }
-
-                        // Authoritative tally update with optimistic fallback
-                        if (typeof voteData.messi === 'number' && typeof voteData.ronaldo === 'number') {
-                            vault.messiCount = Math.max(vault.messiCount + (candidate === 'messi' ? 1 : 0), voteData.messi);
-                            vault.ronaldoCount = Math.max(vault.ronaldoCount + (candidate === 'ronaldo' ? 1 : 0), voteData.ronaldo);
-                        } else {
-                            if (candidate === 'messi') vault.messiCount++;
-                            if (candidate === 'ronaldo') vault.ronaldoCount++;
-                        }
-
-                        const cd = (voteData && voteData.cooldownMs) || COOLDOWN_MS;
-                        vault.lockedUntil = now + cd;
-                        vault.lockedCandidate = candidate;
-                        if (typeof voteData.deadlineMs === 'number' && voteData.deadlineMs > 0) {
-                            vault.pollDeadlineMs = voteData.deadlineMs;
-                            try { localStorage.setItem(DEADLINE_KEY, String(voteData.deadlineMs)); } catch (_) {}
-                        }
-
-                        // Persist immediately to localStorage & BroadcastChannel
-                        saveLocalState();
-                        broadcastState();
+                        throw new Error(voteData.error || 'Server rejected vote.');
                     }
 
-                    // MODE B: LOCAL / DECENTRALIZED ENGINE
-                    else {
-                        // Compute local PoW receipt
-                        const salt = `TLR_BALLOT_${candidate}_${now}_`;
-                        nonce = await solveProofOfWork(salt, 3);
-
-                        // Increment local count
+                    // Authoritative tally update with optimistic fallback
+                    if (typeof voteData.messi === 'number' && typeof voteData.ronaldo === 'number') {
+                        vault.messiCount = Math.max(vault.messiCount + (candidate === 'messi' ? 1 : 0), voteData.messi);
+                        vault.ronaldoCount = Math.max(vault.ronaldoCount + (candidate === 'ronaldo' ? 1 : 0), voteData.ronaldo);
+                    } else {
                         if (candidate === 'messi') vault.messiCount++;
                         if (candidate === 'ronaldo') vault.ronaldoCount++;
-
-                        vault.lockedUntil = now + COOLDOWN_MS;
-                        vault.lockedCandidate = candidate;
-                        saveLocalState();
-                        broadcastState();
                     }
+
+                    // Seal ballot permanently
+                    persistVoterState(candidate);
+
+                    if (typeof voteData.deadlineMs === 'number' && voteData.deadlineMs > 0) {
+                        vault.pollDeadlineMs = voteData.deadlineMs;
+                        try { localStorage.setItem(DEADLINE_KEY, String(voteData.deadlineMs)); } catch (_) {}
+                    }
+
+                    // Persist immediately to localStorage & BroadcastChannel
+                    saveLocalState();
+                    broadcastState();
 
                     // Success actions
                     vault.isSubmitting = false;
                     closeBallotModal();
                     renderStandingsUI();
-                    renderCooldownUI();
+                    renderVoterStatusUI();
                     triggerCelebration(candidate);
                     appendLiveStreamItem(candidate, nonce ? '0000' + String(nonce).slice(0, 6) : null);
                     showReceiptModal(candidate);
@@ -1767,7 +1802,10 @@
                     vault.isSubmitting = false;
                     if (feedbackBox) {
                         feedbackBox.textContent = err.message || 'Could not record ballot. Please try again.';
-                        feedbackBox.className = 'text-xs font-medium text-center py-2.5 px-3.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40';
+                        const isChance = (err.message || '').includes('chance');
+                        feedbackBox.className = isChance
+                            ? 'text-xs font-medium text-center py-2.5 px-3.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                            : 'text-xs font-medium text-center py-2.5 px-3.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40';
                         feedbackBox.classList.remove('hidden');
                     }
                     resetSealSlider();
@@ -1993,11 +2031,11 @@
                 return `${hrs}:${mins}:${secs}`;
             }
 
-            function renderCooldownUI() {
+            function renderVoterStatusUI() {
                 const now = Date.now();
                 const banner = document.getElementById('voter-cooldown-banner');
-                const timerEl = document.getElementById('cooldown-timer-display');
                 const pillEl = document.getElementById('cooldown-backed-pill');
+                const bannerSubtext = document.getElementById('cooldown-banner-subtext');
                 const btnMessi = document.getElementById('btn-vote-messi');
                 const btnRonaldo = document.getElementById('btn-vote-ronaldo');
                 const lblMessi = document.getElementById('btn-vote-messi-label');
@@ -2012,23 +2050,34 @@
                     return;
                 }
 
-                if (now < vault.lockedUntil) {
-                    const rem = vault.lockedUntil - now;
-                    const clockStr = formatHHMMSS(rem);
+                if (vault.hasVoted) {
                     if (banner) banner.classList.remove('hidden');
-                    if (timerEl) timerEl.textContent = clockStr;
+                    const backedName = vault.backedCandidate === 'ronaldo' ? 'Cristiano Ronaldo (#7)' : (vault.backedCandidate === 'messi' ? 'Lionel Messi (#10)' : 'Your Selected Candidate');
+                    if (pillEl) pillEl.textContent = `Ballot Sealed: ${backedName}`;
+                    if (bannerSubtext) {
+                        bannerSubtext.textContent = `You have already cast your official vote for ${backedName}. Each device is strictly permitted only 1 vote in this referendum.`;
+                    }
 
-                    const backedName = vault.lockedCandidate === 'ronaldo' ? 'Cristiano Ronaldo (#7)' : 'Lionel Messi (#10)';
-                    if (pillEl) pillEl.textContent = `Backed: ${backedName}`;
-
-                    if (btnMessi) btnMessi.disabled = true;
-                    if (btnRonaldo) btnRonaldo.disabled = true;
-                    if (lblMessi) lblMessi.textContent = `Cooldown Active (${clockStr})`;
-                    if (lblRonaldo) lblRonaldo.textContent = `Cooldown Active (${clockStr})`;
+                    if (btnMessi) {
+                        btnMessi.disabled = true;
+                        btnMessi.classList.add('opacity-75', 'cursor-not-allowed');
+                    }
+                    if (btnRonaldo) {
+                        btnRonaldo.disabled = true;
+                        btnRonaldo.classList.add('opacity-75', 'cursor-not-allowed');
+                    }
+                    if (lblMessi) lblMessi.textContent = 'Your chance ran out';
+                    if (lblRonaldo) lblRonaldo.textContent = 'Your chance ran out';
                 } else {
                     if (banner) banner.classList.add('hidden');
-                    if (btnMessi) btnMessi.disabled = false;
-                    if (btnRonaldo) btnRonaldo.disabled = false;
+                    if (btnMessi) {
+                        btnMessi.disabled = false;
+                        btnMessi.classList.remove('opacity-75', 'cursor-not-allowed');
+                    }
+                    if (btnRonaldo) {
+                        btnRonaldo.disabled = false;
+                        btnRonaldo.classList.remove('opacity-75', 'cursor-not-allowed');
+                    }
                     if (lblMessi) lblMessi.textContent = 'Cast Official Ballot For Messi';
                     if (lblRonaldo) lblRonaldo.textContent = 'Cast Official Ballot For Ronaldo';
                 }
@@ -2057,7 +2106,7 @@
                 if (rem <= 0) {
                     const st = document.getElementById('deadline-status-label');
                     if (st) st.textContent = 'Referendum Concluded';
-                    renderCooldownUI();
+                    renderVoterStatusUI();
                 }
             }
 
@@ -2247,15 +2296,15 @@
 
                 renderStandingsUI();
                 renderNineDayDeadlineClock();
-                renderCooldownUI();
+                renderVoterStatusUI();
 
                 // Render real ballots ledger
                 renderRealBallots(vault.recentBallots || []);
 
-                // Heartbeat interval for clocks & cooldown timer
+                // Heartbeat interval for clocks & voter status
                 setInterval(() => {
                     renderNineDayDeadlineClock();
-                    renderCooldownUI();
+                    renderVoterStatusUI();
                 }, 1000);
             });
 

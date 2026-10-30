@@ -18,12 +18,12 @@ module.exports = async function handler(req, res) {
     return lib.send(res, 400, { error: 'Referendum has concluded.' });
   }
 
-  if (!lib.allow('v:' + ip, 6, 10 * 60e3)) {
+  if (!lib.allow('v:' + ip, 10, 10 * 60e3)) {
     lib.strike(ip);
     return lib.send(res, 429, { error: 'Too many vote attempts. Try later.' });
   }
 
-  if (!lib.allow('gv', 150, 60e3)) {
+  if (!lib.allow('gv', 200, 60e3)) {
     return lib.send(res, 429, { error: 'Server is busy. Try again shortly.' });
   }
 
@@ -42,6 +42,21 @@ module.exports = async function handler(req, res) {
   }
 
   const ipKey = lib.hmac(ip);
+  const deviceId = (typeof body.deviceId === 'string' && body.deviceId.length >= 8 && body.deviceId.length <= 64)
+    ? body.deviceId.trim()
+    : null;
+
+  // STRICT LIFETIME RESTRICTION: One ballot per device / network forever
+  const voterStatus = await lib.checkVoterStatusAsync(ipKey, deviceId);
+  if (voterStatus.hasVoted) {
+    return lib.send(res, 403, {
+      error: 'Your chance ran out.',
+      hasVoted: true,
+      backedCandidate: voterStatus.backedCandidate
+    });
+  }
+
+  // Cryptographic Proof-of-Work verification
   const bad = lib.checkToken(body.token, body.nonce, ipKey);
   if (bad) {
     lib.strike(ip, 2);
@@ -52,39 +67,17 @@ module.exports = async function handler(req, res) {
     return lib.send(res, 400, { error: 'Invalid choice.' });
   }
 
-  // Check cooldown from KV or local db
-  const currentSt = await lib.getStateAsync(ipKey);
-  if (currentSt.cooldownMs > 0) {
-    return lib.send(res, 429, { error: 'You already voted. Come back later.', ...currentSt });
-  }
+  // Atomic permanent commit to ledger
+  await lib.recordVoteAsync(ipKey, deviceId, body.choice, body.nonce);
 
-  const last = db.voters[ipKey];
-  if (last && Date.now() - last < lib.COOLDOWN_MS) {
-    return lib.send(res, 429, { error: 'You already voted. Come back later.', ...currentSt });
-  }
-
-  db.voters[ipKey] = Date.now();
-  db.counts[body.choice] = (db.counts[body.choice] || 0) + 1;
-  const ballot = lib.recordBallot(body.choice, body.nonce);
-  lib.saveDb();
-
-  // Update in-memory cache immediately
-  if (body.choice === 'messi') lib.cachedGlobalState.messi++;
-  if (body.choice === 'ronaldo') lib.cachedGlobalState.ronaldo++;
-  lib.cachedGlobalState.recentBallots = [ballot, ...(lib.cachedGlobalState.recentBallots || [])].slice(0, 10);
-
-  // Atomically update Redis
-  if (lib.hasKV) {
-    const base = lib.kvUrl.replace(/\/+$/, '');
-    const headers = { Authorization: `Bearer ${lib.kvToken}` };
-    Promise.all([
-      fetch(`${base}/incr/goat:votes:${body.choice}`, { headers }).catch(() => {}),
-      fetch(`${base}/lpush/goat:ballots/${encodeURIComponent(JSON.stringify(ballot))}`, { headers }).catch(() => {}),
-      fetch(`${base}/ltrim/goat:ballots/0/9`, { headers }).catch(() => {}),
-      fetch(`${base}/setex/goat:voters:${ipKey}/14400/1`, { headers }).catch(() => {})
-    ]).catch(() => {});
-  }
-
-  const finalSt = await lib.getStateAsync(ipKey);
-  return lib.send(res, 200, { ok: true, ...finalSt });
+  const finalSt = await lib.getStateAsync(ipKey, deviceId);
+  return lib.send(res, 200, {
+    ok: true,
+    hasVoted: true,
+    backedCandidate: body.choice,
+    messi: finalSt.messi,
+    ronaldo: finalSt.ronaldo,
+    recentBallots: finalSt.recentBallots,
+    deadlineMs: finalSt.deadlineMs
+  });
 };
