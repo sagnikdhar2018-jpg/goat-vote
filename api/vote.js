@@ -65,15 +65,25 @@ module.exports = async function handler(req, res) {
 
   db.voters[ipKey] = Date.now();
   db.counts[body.choice] = (db.counts[body.choice] || 0) + 1;
-  lib.recordBallot(body.choice, body.nonce);
+  const ballot = lib.recordBallot(body.choice, body.nonce);
   lib.saveDb();
 
-  // Atomically update cloud persistent counter and KV
-  await Promise.all([
-    lib.cloudIncr(body.choice),
-    lib.kvIncr(body.choice),
-    lib.kvSetVoter(ipKey)
-  ]);
+  // Update in-memory cache immediately
+  if (body.choice === 'messi') lib.cachedGlobalState.messi++;
+  if (body.choice === 'ronaldo') lib.cachedGlobalState.ronaldo++;
+  lib.cachedGlobalState.recentBallots = [ballot, ...(lib.cachedGlobalState.recentBallots || [])].slice(0, 10);
+
+  // Atomically update Redis
+  if (lib.hasKV) {
+    const base = lib.kvUrl.replace(/\/+$/, '');
+    const headers = { Authorization: `Bearer ${lib.kvToken}` };
+    Promise.all([
+      fetch(`${base}/incr/goat:votes:${body.choice}`, { headers }).catch(() => {}),
+      fetch(`${base}/lpush/goat:ballots/${encodeURIComponent(JSON.stringify(ballot))}`, { headers }).catch(() => {}),
+      fetch(`${base}/ltrim/goat:ballots/0/9`, { headers }).catch(() => {}),
+      fetch(`${base}/setex/goat:voters:${ipKey}/14400/1`, { headers }).catch(() => {})
+    ]).catch(() => {});
+  }
 
   const finalSt = await lib.getStateAsync(ipKey);
   return lib.send(res, 200, { ok: true, ...finalSt });

@@ -19,40 +19,6 @@ const SECRET_FILE = isServerless ? path.join('/tmp', '.secret') : path.join(__di
 const secret = process.env.SECRET || 'touchline-goat-referendum-secure-vault-2026-sagnikdhar2018-production';
 const hmac = s => crypto.createHmac('sha256', secret).update(s).digest('hex');
 
-// Cryptographically salted cloud persistent counter keys (untamperable from outside)
-const cloudNs = 'goat-referendum-' + hmac('namespace_seed_2026_prod').slice(0, 16);
-const cloudKeyMessi = 'm_' + hmac('messi_v2_prod').slice(0, 12);
-const cloudKeyRonaldo = 'r_' + hmac('ronaldo_v2_prod').slice(0, 12);
-
-async function cloudIncr(choice) {
-  const key = choice === 'messi' ? cloudKeyMessi : cloudKeyRonaldo;
-  try {
-    const res = await fetch(`https://abacus.jasoncameron.dev/hit/${cloudNs}/${key}`, {
-      signal: AbortSignal.timeout(4000)
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (typeof data.value === 'number') return data.value;
-    }
-  } catch (_) {}
-  return null;
-}
-
-async function cloudGet() {
-  try {
-    const [resM, resR] = await Promise.all([
-      fetch(`https://abacus.jasoncameron.dev/get/${cloudNs}/${cloudKeyMessi}`, { signal: AbortSignal.timeout(4000) }),
-      fetch(`https://abacus.jasoncameron.dev/get/${cloudNs}/${cloudKeyRonaldo}`, { signal: AbortSignal.timeout(4000) })
-    ]);
-    const [dM, dR] = await Promise.all([resM.json(), resR.json()]);
-    const messi = typeof dM.value === 'number' ? dM.value : 0;
-    const ronaldo = typeof dR.value === 'number' ? dR.value : 0;
-    return { messi, ronaldo };
-  } catch (_) {
-    return { messi: 0, ronaldo: 0 };
-  }
-}
-
 // Persistence Layer (Filesystem fallback)
 let db = { counts: { messi: 0, ronaldo: 0 }, voters: {}, recentBallots: [], deadlineMs: Date.now() + NINE_DAYS_MS };
 
@@ -96,62 +62,78 @@ function recordBallot(choice, proof) {
   return ballot;
 }
 
-// Vercel KV / Upstash Redis global persistent storage (zero-config if enabled in Vercel dashboard)
-const kvUrl = (process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '').trim();
-const kvToken = (process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '').trim();
+// Global High-Speed Persistent Redis Layer (Upstash / Vercel KV)
+const kvUrl = (process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || 'https://classic-calf-243852.upstash.io').trim();
+const kvToken = (process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || 'gQAAAAAAA7iMAQIgcDE5NDJkZDA3M2VhODQ0MGY5OTI2MDBlMjdjNjIxMjk3NA').trim();
 const hasKV = Boolean(kvUrl && kvToken);
 
-async function kvIncr(choice) {
-  if (!hasKV) return null;
+// In-memory cache for instant <10ms /api/state responses
+let cachedGlobalState = { messi: 0, ronaldo: 0, recentBallots: [] };
+let lastGlobalFetch = 0;
+let isRefreshingGlobal = false;
+
+async function refreshGlobalState() {
+  if (!hasKV || isRefreshingGlobal) return cachedGlobalState;
+  isRefreshingGlobal = true;
   try {
-    const res = await fetch(`${kvUrl.replace(/\/+$/, '')}/incr/goat:votes:${choice}`, {
-      headers: { Authorization: `Bearer ${kvToken}` }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      return typeof data.result === 'number' ? data.result : null;
+    const base = kvUrl.replace(/\/+$/, '');
+    const headers = { Authorization: `Bearer ${kvToken}` };
+    const [mRes, rRes, bRes] = await Promise.all([
+      fetch(`${base}/get/goat:votes:messi`, { headers, signal: AbortSignal.timeout(2500) }),
+      fetch(`${base}/get/goat:votes:ronaldo`, { headers, signal: AbortSignal.timeout(2500) }),
+      fetch(`${base}/lrange/goat:ballots/0/9`, { headers, signal: AbortSignal.timeout(2500) })
+    ]);
+    const [mData, rData, bData] = await Promise.all([mRes.json(), rRes.json(), bRes.json()]);
+    const messi = +(mData?.result || 0);
+    const ronaldo = +(rData?.result || 0);
+    let ballots = [];
+    if (Array.isArray(bData?.result)) {
+      ballots = bData.result.map(x => { try { return JSON.parse(x); } catch (_) { return null; } }).filter(Boolean);
     }
+    cachedGlobalState = {
+      messi: Math.max(db.counts.messi, messi),
+      ronaldo: Math.max(db.counts.ronaldo, ronaldo),
+      recentBallots: ballots.length ? ballots : (db.recentBallots || [])
+    };
+    lastGlobalFetch = Date.now();
   } catch (_) {}
-  return null;
+  isRefreshingGlobal = false;
+  return cachedGlobalState;
 }
 
-async function kvSetVoter(ipKey) {
-  if (!hasKV) return;
-  try {
-    // 4 hour cooldown = 14400 seconds
-    await fetch(`${kvUrl.replace(/\/+$/, '')}/setex/goat:voters:${ipKey}/14400/1`, {
-      headers: { Authorization: `Bearer ${kvToken}` }
-    });
-  } catch (_) {}
-}
+// Warm up cache on module load
+refreshGlobalState().catch(() => {});
 
 async function getStateAsync(ipKey) {
+  loadDb();
+  const now = Date.now();
+
   if (hasKV) {
-    try {
-      const base = kvUrl.replace(/\/+$/, '');
-      const headers = { Authorization: `Bearer ${kvToken}` };
-      const [mRes, rRes, vRes] = await Promise.all([
-        fetch(`${base}/get/goat:votes:messi`, { headers }),
-        fetch(`${base}/get/goat:votes:ronaldo`, { headers }),
-        fetch(`${base}/ttl/goat:voters:${ipKey}`, { headers })
-      ]);
-      const [mData, rData, vData] = await Promise.all([mRes.json(), rRes.json(), vRes.json()]);
-      const m = Math.max(db.counts.messi, +(mData?.result || 0));
-      const r = Math.max(db.counts.ronaldo, +(rData?.result || 0));
-      const ttl = +(vData?.result || 0);
-      const cooldownMs = ttl > 0 ? ttl * 1000 : 0;
-      return { messi: m, ronaldo: r, cooldownMs, deadlineMs: db.deadlineMs, recentBallots: db.recentBallots || [] };
-    } catch (_) {}
+    if (now - lastGlobalFetch > 2500) {
+      if (lastGlobalFetch === 0) {
+        // Cold start: wait max 1.5s
+        await Promise.race([
+          refreshGlobalState(),
+          new Promise(r => setTimeout(r, 1500))
+        ]);
+      } else {
+        // Stale-while-revalidate: respond instantly (0ms) and refresh in background
+        refreshGlobalState().catch(() => {});
+      }
+    }
   }
 
-  loadDb();
-  const cloud = await cloudGet();
-  db.counts.messi = Math.max(db.counts.messi, cloud.messi);
-  db.counts.ronaldo = Math.max(db.counts.ronaldo, cloud.ronaldo);
-
   const last = db.voters[ipKey];
-  const left = last ? Math.max(0, COOLDOWN_MS - (Date.now() - last)) : 0;
-  return { ...db.counts, cooldownMs: left, deadlineMs: db.deadlineMs, recentBallots: db.recentBallots || [] };
+  const left = last ? Math.max(0, COOLDOWN_MS - (now - last)) : 0;
+  return {
+    messi: Math.max(db.counts.messi, cachedGlobalState.messi || 0),
+    ronaldo: Math.max(db.counts.ronaldo, cachedGlobalState.ronaldo || 0),
+    cooldownMs: left,
+    deadlineMs: db.deadlineMs,
+    recentBallots: (cachedGlobalState.recentBallots && cachedGlobalState.recentBallots.length)
+      ? cachedGlobalState.recentBallots
+      : (db.recentBallots || [])
+  };
 }
 
 // IP normalization
@@ -269,8 +251,10 @@ module.exports = {
   send,
   getState,
   getStateAsync,
-  cloudIncr,
   recordBallot,
-  kvIncr,
-  kvSetVoter
+  refreshGlobalState,
+  kvUrl,
+  kvToken,
+  hasKV,
+  cachedGlobalState
 };

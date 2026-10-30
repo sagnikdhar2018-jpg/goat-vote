@@ -1404,87 +1404,48 @@
                 renderCooldownUI();
                 renderNineDayDeadlineClock();
 
-                // 2. Check if Node server endpoint (/api/state) is running
+                // 2. Default to Node/Vercel serverless mode and sync
+                vault.backendType = 'node';
+                await pollNodeState();
+
+                // 3. Keep live server synchronization running permanently every 2.5 seconds
+                if (!vault.syncTimer) {
+                    vault.syncTimer = setInterval(pollNodeState, 2500);
+                }
+            }
+
+            async function pollNodeState() {
+                const badgeEl = document.getElementById('backend-status-badge');
+                const textEl = document.getElementById('backend-status-text');
+
                 try {
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 2500);
+                    const timeoutId = setTimeout(() => controller.abort(), 8000);
                     const res = await fetch('/api/state', { cache: 'no-store', signal: controller.signal });
                     clearTimeout(timeoutId);
 
                     if (res.ok) {
                         const data = await res.json();
-                        if (typeof data.messi === 'number' && typeof data.ronaldo === 'number') {
-                            vault.backendType = 'node';
-                            vault.messiCount = Math.max(vault.messiCount, data.messi);
-                            vault.ronaldoCount = Math.max(vault.ronaldoCount, data.ronaldo);
-                            if (data.cooldownMs && data.cooldownMs > 0) {
-                                const srvLock = Date.now() + data.cooldownMs;
-                                if (srvLock > vault.lockedUntil) vault.lockedUntil = srvLock;
-                            }
-                            if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
-                                vault.pollDeadlineMs = data.deadlineMs;
-                                try { localStorage.setItem(DEADLINE_KEY, String(data.deadlineMs)); } catch (_) {}
-                            }
-                            if (Array.isArray(data.recentBallots)) {
-                                vault.recentBallots = data.recentBallots;
-                                renderRealBallots(data.recentBallots);
-                            }
-                            if (badgeEl && textEl) {
-                                textEl.textContent = 'Node Server Synced';
-                                badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]';
-                            }
-                            saveLocalState();
-                            renderStandingsUI();
-                            renderCooldownUI();
-                            renderNineDayDeadlineClock();
-                            setInterval(pollNodeState, 3000);
-                            return;
+                        vault.backendType = 'node';
+
+                        if (badgeEl && textEl) {
+                            textEl.textContent = 'Node Server Synced';
+                            badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]';
                         }
-                    }
-                } catch (_) {}
 
-                // 3. Check if Firebase configuration is provided
-                if (typeof window.__firebase_config !== 'undefined' && window.__firebase_config) {
-                    vault.backendType = 'firebase';
-                    if (badgeEl && textEl) {
-                        textEl.textContent = 'Firestore Synced';
-                        badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold text-[11px]';
-                    }
-                    await initFirebaseLedger();
-                    return;
-                }
-
-                // 4. Fallback to High-Integrity Local Ledger
-                vault.backendType = 'local';
-                if (badgeEl && textEl) {
-                    textEl.textContent = 'Verified Local Ledger';
-                    badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30 font-semibold text-[11px]';
-                }
-
-                renderStandingsUI();
-                renderCooldownUI();
-                renderNineDayDeadlineClock();
-            }
-
-            async function pollNodeState() {
-                if (vault.backendType !== 'node') return;
-                try {
-                    const res = await fetch('/api/state', { cache: 'no-store' });
-                    if (res.ok) {
-                        const data = await res.json();
                         let changed = false;
-                        if (typeof data.messi === 'number' && data.messi > vault.messiCount) {
-                            vault.messiCount = data.messi;
+                        if (typeof data.messi === 'number' && data.messi !== vault.messiCount) {
+                            vault.messiCount = Math.max(vault.messiCount, data.messi);
                             changed = true;
                         }
-                        if (typeof data.ronaldo === 'number' && data.ronaldo > vault.ronaldoCount) {
-                            vault.ronaldoCount = data.ronaldo;
+                        if (typeof data.ronaldo === 'number' && data.ronaldo !== vault.ronaldoCount) {
+                            vault.ronaldoCount = Math.max(vault.ronaldoCount, data.ronaldo);
                             changed = true;
                         }
                         if (data.cooldownMs && data.cooldownMs > 0) {
-                            const newLock = Date.now() + data.cooldownMs;
-                            if (newLock > vault.lockedUntil) {
-                                vault.lockedUntil = newLock;
+                            const srvLock = Date.now() + data.cooldownMs;
+                            if (srvLock > vault.lockedUntil) {
+                                vault.lockedUntil = srvLock;
                                 changed = true;
                             }
                         }
@@ -1498,6 +1459,18 @@
                         if (changed) {
                             saveLocalState();
                             renderStandingsUI();
+                        }
+                        renderCooldownUI();
+                        return;
+                    }
+                } catch (err) {
+                    // Ephemeral cold-start delay or network jitter: maintain active sync polling
+                    if (badgeEl && textEl && vault.backendType === 'node') {
+                        textEl.textContent = 'Syncing Real-Time Ledger...';
+                        badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold text-[11px] animate-pulse';
+                    }
+                }
+            }
                         }
                         renderCooldownUI();
                     }
@@ -1706,6 +1679,7 @@
 
                 const candidate = vault.pendingCandidate;
                 const now = Date.now();
+                let nonce = '';
 
                 try {
                     // MODE A: NODE SERVER INTEGRATION
@@ -1718,7 +1692,7 @@
 
                         // 2. Compute Proof-of-Work with standard SHA-256
                         const t0 = Date.now();
-                        const nonce = await solveProofOfWork(token + ':', difficulty || 4);
+                        nonce = await solveProofOfWork(token + ':', difficulty || 4);
 
                         // Respect minAgeMs if required
                         const elapsed = Date.now() - t0;
@@ -1768,7 +1742,7 @@
                     else {
                         // Compute local PoW receipt
                         const salt = `TLR_BALLOT_${candidate}_${now}_`;
-                        const nonce = await solveProofOfWork(salt, 3);
+                        nonce = await solveProofOfWork(salt, 3);
 
                         // Increment local count
                         if (candidate === 'messi') vault.messiCount++;
