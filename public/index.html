@@ -6,10 +6,10 @@
     <title>THE TOUCHLINE REFERENDUM | Lionel Messi vs. Cristiano Ronaldo — Official Public Poll</title>
     
     <!-- SEO & Open Graph Metadata -->
-    <meta name="description" content="The definitive, unfiltered global football ballot. Vote between Lionel Messi and Cristiano Ronaldo in The Touchline Referendum. Zero bots, strict 1-vote lifetime limit per device, 9-day official window.">
+    <meta name="description" content="The definitive, unfiltered global football ballot. Vote between Lionel Messi and Cristiano Ronaldo in The Touchline Referendum. Zero bots, strict 1-vote lifetime limit per device, 10-day official window.">
     <meta name="keywords" content="Messi vs Ronaldo, GOAT vote counter, Ballon d'Or, Football poll, Touchline Referendum, Messi, Ronaldo, CR7">
     <meta property="og:title" content="THE TOUCHLINE REFERENDUM | Lionel Messi vs. Cristiano Ronaldo">
-    <meta property="og:description" content="Cast your official verified public ballot in the Messi vs Ronaldo GOAT referendum. No PR lobbies, no bots. Live 9-day public poll.">
+    <meta property="og:description" content="Cast your official verified public ballot in the Messi vs Ronaldo GOAT referendum. No PR lobbies, no bots. Live 10-day public poll.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg">
     <meta name="twitter:card" content="summary_large_image">
@@ -266,7 +266,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- EDITORIAL HEADER WITH FLATTENED 9-DAY DEADLINE COUNTDOWN CLOCK         -->
+    <!-- EDITORIAL HEADER WITH FLATTENED 10-DAY DEADLINE COUNTDOWN CLOCK        -->
     <!-- ===================================================================== -->
     <header class="sticky top-0 z-40 bg-obsidian/95 backdrop-blur-xl border-b border-white/10 shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
@@ -293,7 +293,7 @@
                 </div>
             </div>
 
-            <!-- Controls & Flattened 9-Day Official Poll Deadline Clock -->
+            <!-- Controls & Flattened 10-Day Official Poll Deadline Clock -->
             <div class="flex items-center gap-3 flex-wrap justify-center">
                 <!-- Sound Toggle Button (44px touch target) -->
                 <button
@@ -318,14 +318,14 @@
                     <span>Share</span>
                 </button>
 
-                <!-- Flattened 9-Day Countdown Clock (No Nested Mini-Cards) -->
+                <!-- Flattened 10-Day Countdown Clock (No Nested Mini-Cards) -->
                 <div class="flex items-center gap-3 bg-charcoal/90 border border-amber-500/30 rounded-2xl px-3.5 py-1.5 shadow-inner">
                     <div class="text-right pr-2.5 border-r border-white/10">
                         <span class="block text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold leading-tight">
                             Poll Closes In
                         </span>
                         <span id="deadline-status-label" class="text-[11px] text-slate-300 font-medium leading-tight">
-                            9-Day Window
+                            10-Day Window
                         </span>
                     </div>
                     <div class="flex items-center gap-1.5 font-mono text-center">
@@ -428,6 +428,35 @@
                         </div>
                     </div>
 
+                    <!-- OFFICIAL REFERENDUM FINAL VERDICT PROCLAMATION (SHOWN ONCE 10-DAY WINDOW ENDS) -->
+                    <div id="referendum-verdict-banner" class="hidden rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-950/80 via-obsidian to-amber-950/80 border-2 border-amber-400/90 shadow-2xl backdrop-blur-md transition-all duration-500">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
+                            <div class="flex flex-col sm:flex-row items-center gap-4">
+                                <div id="verdict-trophy-icon" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-300 via-amber-500 to-amber-600 text-slate-950 flex items-center justify-center text-2xl shadow-xl shadow-amber-500/40 shrink-0">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[10px] font-mono font-extrabold uppercase tracking-wider">
+                                        <span>Official Referendum Concluded</span>
+                                        <span>•</span>
+                                        <span>Certified Public Verdict</span>
+                                    </div>
+                                    <h2 id="verdict-winner-headline" class="font-serif font-black text-xl sm:text-2xl text-white tracking-tight">
+                                        LIONEL MESSI IS CROWNED THE UNDISPUTED GOAT 👑
+                                    </h2>
+                                    <p id="verdict-loser-subline" class="text-xs sm:text-sm text-rose-300 font-mono font-bold">
+                                        CRISTIANO RONALDO IS OFFICIALLY RECOGNIZED AS THE BLUETOOTH FRAUD MAN 📡
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-obsidian/95 border border-amber-400/50 rounded-2xl p-3.5 text-center shrink-0 min-w-[170px] shadow-inner">
+                                <span class="block text-[10px] font-mono uppercase tracking-wider text-slate-400">Final Verdict</span>
+                                <span class="font-mono font-black text-base sm:text-lg text-amber-400">DECISION SEALED</span>
+                                <span id="verdict-margin-stat" class="block text-[11px] font-mono text-slate-300 mt-0.5">By Public Ballot</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- OFFICIAL VOTER STATUS BANNER (PERMANENT SINGLE-BALLOT ENFORCEMENT) -->
                     <div id="voter-cooldown-banner" class="hidden rounded-2xl p-4 bg-amber-950/40 border border-amber-500/40 backdrop-blur-md transition-all duration-300">
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -474,7 +503,7 @@
                     </p>
 
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                        This is the unfiltered public referendum. Both contenders begin at zero. Every single vote requires cryptographic proof-of-work and is bound to a strict 1-vote limit per device until the 9-day countdown closes.
+                        This is the unfiltered public referendum. Both contenders begin at zero. Every single vote requires cryptographic proof-of-work and is bound to a strict 1-vote limit per device until the 10-day countdown closes.
                     </p>
 
                     <div class="pt-2 flex items-center gap-3 text-xs font-mono text-slate-300">
@@ -519,7 +548,8 @@
                     </div>
 
                     <!-- Portrait Frame with Multitier Fallback -->
-                    <div class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-sky-950/60 to-obsidian border border-sky-400/30 h-72 sm:h-96 flex items-center justify-center group">
+                    <div id="portrait-frame-messi" class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-sky-950/60 to-obsidian border border-sky-400/30 h-72 sm:h-96 flex items-center justify-center group">
+                        <div id="card-verdict-messi" class="hidden absolute top-3 left-3 right-3 z-30 transition-all duration-300"></div>
                         <img
                             id="portrait-messi"
                             src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
@@ -618,7 +648,8 @@
                     </div>
 
                     <!-- Portrait Frame with Multitier Fallback -->
-                    <div class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-rose-950/60 to-obsidian border border-rose-400/30 h-72 sm:h-96 flex items-center justify-center group">
+                    <div id="portrait-frame-ronaldo" class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-rose-950/60 to-obsidian border border-rose-400/30 h-72 sm:h-96 flex items-center justify-center group">
+                        <div id="card-verdict-ronaldo" class="hidden absolute top-3 left-3 right-3 z-30 transition-all duration-300"></div>
                         <img
                             id="portrait-ronaldo"
                             src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg"
@@ -1210,9 +1241,9 @@
                         <i class="fa-solid fa-calendar-check text-sm"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">9-Day Public Window</h3>
+                        <h3 class="font-serif font-bold text-sm uppercase tracking-wider text-white">10-Day Public Window</h3>
                         <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                            The referendum closes permanently when the 9-day countdown reaches zero. At that point, the ballot box seals and the final public verdict is locked forever.
+                            The referendum closes permanently when the 10-day countdown reaches zero. At that point, the ballot box seals and the final public verdict is locked forever.
                         </p>
                     </div>
                 </div>
@@ -1230,7 +1261,7 @@
                 THE TOUCHLINE REFERENDUM • PUBLIC FOOTBALL BALLOT
             </p>
             <p class="text-[11px] text-slate-400 font-mono">
-                SHA-256 Proof-of-Work • 1-Vote Limit Per Device • 9-Day Window • Official Ledger
+                SHA-256 Proof-of-Work • 1-Vote Limit Per Device • 10-Day Window • Official Ledger
             </p>
         </div>
     </footer>
@@ -1400,9 +1431,9 @@
 
         (function () {
             const COOLDOWN_MS = 4 * 60 * 60 * 1000;         // 4 Hours
-            const NINE_DAYS_MS = 9 * 24 * 60 * 60 * 1000;   // 9 Days
+            const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;   // 10 Days
             const BROADCAST_NAME = 'touchline_referendum_channel';
-            const DEADLINE_KEY = 'TLR_DEADLINE_V1';
+            const DEADLINE_KEY = 'TLR_DEADLINE_V2';
 
             // Shared Epoch Deadline Initialization (Persists across sessions & page reloads)
             function initPollDeadline() {
@@ -1413,7 +1444,7 @@
                         if (!isNaN(val) && val > 0) return val;
                     }
                 } catch (_) {}
-                const fresh = Date.now() + NINE_DAYS_MS;
+                const fresh = Date.now() + TEN_DAYS_MS;
                 try { localStorage.setItem(DEADLINE_KEY, String(fresh)); } catch (_) {}
                 return fresh;
             }
@@ -1886,7 +1917,7 @@
                 }
                 renderStandingsUI();
                 renderVoterStatusUI();
-                renderNineDayDeadlineClock();
+                renderTenDayDeadlineClock();
 
                 // 2. Sync with high-speed production ledger
                 vault.backendType = 'node';
@@ -1964,7 +1995,8 @@
                 playAudioTone('click');
 
                 if (Date.now() >= vault.pollDeadlineMs) {
-                    notify('The 9-day official referendum window has concluded.', 'warning');
+                    notify('The 10-day official referendum window has concluded. Voting is permanently closed.', 'warning');
+                    renderVoterStatusUI();
                     return;
                 }
 
@@ -2454,20 +2486,103 @@
                 const banner = document.getElementById('voter-cooldown-banner');
                 const pillEl = document.getElementById('cooldown-backed-pill');
                 const bannerSubtext = document.getElementById('cooldown-banner-subtext');
+                const verdictBanner = document.getElementById('referendum-verdict-banner');
+                const verdictWinner = document.getElementById('verdict-winner-headline');
+                const verdictLoser = document.getElementById('verdict-loser-subline');
+                const verdictMargin = document.getElementById('verdict-margin-stat');
+                const cardMessi = document.getElementById('card-verdict-messi');
+                const cardRonaldo = document.getElementById('card-verdict-ronaldo');
                 const btnMessi = document.getElementById('btn-vote-messi');
                 const btnRonaldo = document.getElementById('btn-vote-ronaldo');
                 const lblMessi = document.getElementById('btn-vote-messi-label');
                 const lblRonaldo = document.getElementById('btn-vote-ronaldo-label');
 
+                // 1. REFERENDUM CONCLUDED: 10-DAY COUNTDOWN EXPIRED
                 if (now >= vault.pollDeadlineMs) {
                     if (banner) banner.classList.add('hidden');
-                    if (btnMessi) btnMessi.disabled = true;
-                    if (btnRonaldo) btnRonaldo.disabled = true;
-                    if (lblMessi) lblMessi.textContent = 'Official Poll Concluded';
-                    if (lblRonaldo) lblRonaldo.textContent = 'Official Poll Concluded';
+                    if (verdictBanner) verdictBanner.classList.remove('hidden');
+
+                    if (btnMessi) {
+                        btnMessi.disabled = true;
+                        btnMessi.classList.add('opacity-75', 'cursor-not-allowed');
+                    }
+                    if (btnRonaldo) {
+                        btnRonaldo.disabled = true;
+                        btnRonaldo.classList.add('opacity-75', 'cursor-not-allowed');
+                    }
+
+                    const messiVotes = vault.messiCount || 0;
+                    const ronaldoVotes = vault.ronaldoCount || 0;
+
+                    if (messiVotes > ronaldoVotes) {
+                        // Winner: Messi (THE GOAT) | Loser: Ronaldo (BLUETOOTH FRAUD MAN)
+                        if (verdictWinner) verdictWinner.textContent = 'LIONEL MESSI IS CROWNED THE GOAT 👑';
+                        if (verdictLoser) verdictLoser.textContent = 'CRISTIANO RONALDO IS OFFICIALLY DESIGNATED AS THE BLUETOOTH FRAUD MAN 📡';
+                        if (verdictMargin) verdictMargin.textContent = `Won by ${(messiVotes - ronaldoVotes).toLocaleString()} votes`;
+
+                        if (lblMessi) lblMessi.textContent = '👑 CROWNED THE GOAT';
+                        if (lblRonaldo) lblRonaldo.textContent = '📡 BLUETOOTH FRAUD MAN';
+
+                        if (cardMessi) {
+                            cardMessi.innerHTML = `
+                                <div class="rounded-xl px-4 py-2.5 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-slate-950 font-serif font-black text-xs sm:text-sm tracking-wider uppercase shadow-2xl flex items-center justify-center gap-2 border-2 border-amber-200 animate-bounce">
+                                    <span>👑</span><span>CROWNED THE GOAT</span><span>🏆</span>
+                                </div>
+                            `;
+                            cardMessi.classList.remove('hidden');
+                        }
+                        if (cardRonaldo) {
+                            cardRonaldo.innerHTML = `
+                                <div class="rounded-xl px-4 py-2 bg-gradient-to-r from-rose-950/95 via-rose-900/95 to-slate-950/95 text-rose-300 font-mono font-bold text-xs tracking-wider uppercase shadow-xl flex items-center justify-center gap-2 border border-rose-500/60">
+                                    <span>📡</span><span>BLUETOOTH FRAUD MAN</span>
+                                </div>
+                            `;
+                            cardRonaldo.classList.remove('hidden');
+                        }
+                    } else if (ronaldoVotes > messiVotes) {
+                        // Winner: Ronaldo (THE GOAT) | Loser: Messi (BLUETOOTH FRAUD MAN)
+                        if (verdictWinner) verdictWinner.textContent = 'CRISTIANO RONALDO IS CROWNED THE GOAT 👑';
+                        if (verdictLoser) verdictLoser.textContent = 'LIONEL MESSI IS OFFICIALLY DESIGNATED AS THE BLUETOOTH FRAUD MAN 📡';
+                        if (verdictMargin) verdictMargin.textContent = `Won by ${(ronaldoVotes - messiVotes).toLocaleString()} votes`;
+
+                        if (lblRonaldo) lblRonaldo.textContent = '👑 CROWNED THE GOAT';
+                        if (lblMessi) lblMessi.textContent = '📡 BLUETOOTH FRAUD MAN';
+
+                        if (cardRonaldo) {
+                            cardRonaldo.innerHTML = `
+                                <div class="rounded-xl px-4 py-2.5 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-slate-950 font-serif font-black text-xs sm:text-sm tracking-wider uppercase shadow-2xl flex items-center justify-center gap-2 border-2 border-amber-200 animate-bounce">
+                                    <span>👑</span><span>CROWNED THE GOAT</span><span>🏆</span>
+                                </div>
+                            `;
+                            cardRonaldo.classList.remove('hidden');
+                        }
+                        if (cardMessi) {
+                            cardMessi.innerHTML = `
+                                <div class="rounded-xl px-4 py-2 bg-gradient-to-r from-rose-950/95 via-rose-900/95 to-slate-950/95 text-rose-300 font-mono font-bold text-xs tracking-wider uppercase shadow-xl flex items-center justify-center gap-2 border border-rose-500/60">
+                                    <span>📡</span><span>BLUETOOTH FRAUD MAN</span>
+                                </div>
+                            `;
+                            cardMessi.classList.remove('hidden');
+                        }
+                    } else {
+                        // Dead Heat
+                        if (verdictWinner) verdictWinner.textContent = 'HISTORIC DEAD HEAT: VOTE CONCLUDED';
+                        if (verdictLoser) verdictLoser.textContent = `VOTES TIED AT ${messiVotes.toLocaleString()} EACH`;
+                        if (verdictMargin) verdictMargin.textContent = 'Equal Public Ballots';
+                        if (lblMessi) lblMessi.textContent = 'Poll Concluded (Dead Heat)';
+                        if (lblRonaldo) lblRonaldo.textContent = 'Poll Concluded (Dead Heat)';
+                        if (cardMessi) cardMessi.classList.add('hidden');
+                        if (cardRonaldo) cardRonaldo.classList.add('hidden');
+                    }
                     return;
                 }
 
+                // 2. REFERENDUM ACTIVE: HIDE FINAL VERDICT
+                if (verdictBanner) verdictBanner.classList.add('hidden');
+                if (cardMessi) cardMessi.classList.add('hidden');
+                if (cardRonaldo) cardRonaldo.classList.add('hidden');
+
+                // 3. ENFORCE 1-VOTE LIFETIME LIMIT PER DEVICE
                 if (vault.hasVoted) {
                     if (banner) banner.classList.remove('hidden');
                     const backedName = vault.backedCandidate === 'ronaldo' ? 'Cristiano Ronaldo (#7)' : (vault.backedCandidate === 'messi' ? 'Lionel Messi (#10)' : 'Your Selected Candidate');
@@ -2501,7 +2616,7 @@
                 }
             }
 
-            function renderNineDayDeadlineClock() {
+            function renderTenDayDeadlineClock() {
                 const now = Date.now();
                 const rem = Math.max(0, vault.pollDeadlineMs - now);
 
@@ -2521,10 +2636,12 @@
                 if (mEl) mEl.textContent = String(mins).padStart(2, '0');
                 if (sEl) sEl.textContent = String(secs).padStart(2, '0');
 
+                const st = document.getElementById('deadline-status-label');
                 if (rem <= 0) {
-                    const st = document.getElementById('deadline-status-label');
                     if (st) st.textContent = 'Referendum Concluded';
                     renderVoterStatusUI();
+                } else {
+                    if (st && st.textContent !== '10-Day Window') st.textContent = '10-Day Window';
                 }
             }
 
@@ -2742,7 +2859,7 @@
                 await detectBackend();
 
                 renderStandingsUI();
-                renderNineDayDeadlineClock();
+                renderTenDayDeadlineClock();
                 renderVoterStatusUI();
 
                 // Render real ballots ledger
@@ -2750,7 +2867,7 @@
 
                 // Heartbeat interval for clocks & voter status
                 setInterval(() => {
-                    renderNineDayDeadlineClock();
+                    renderTenDayDeadlineClock();
                     renderVoterStatusUI();
                 }, 1000);
             });

@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
 
   const db = lib.getDb();
   if (Date.now() >= db.deadlineMs) {
-    return lib.send(res, 400, { error: 'Referendum has concluded.' });
+    return lib.send(res, 400, { error: 'The 10-day official referendum has concluded. Voting is permanently closed.' });
   }
 
   if (!lib.allow('v:' + ip, 10, 10 * 60e3)) {

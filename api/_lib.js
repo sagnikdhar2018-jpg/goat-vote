@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const NINE_DAYS_MS = 9 * 24 * 3600 * 1000;
+const TEN_DAYS_MS = 10 * 24 * 3600 * 1000;
 const POW_BITS_HEX = 4;
 const MIN_AGE_MS = 3000;
 const MAX_AGE_MS = 10 * 60 * 1000;
@@ -23,7 +23,7 @@ let db = {
   voters: {},
   devices: {},
   recentBallots: [],
-  deadlineMs: Date.now() + NINE_DAYS_MS
+  deadlineMs: Date.now() + TEN_DAYS_MS
 };
 
 function loadDb() {
@@ -40,7 +40,7 @@ function loadDb() {
       }
     }
   } catch (_) {}
-  if (!db.deadlineMs) db.deadlineMs = Date.now() + NINE_DAYS_MS;
+  if (!db.deadlineMs) db.deadlineMs = Date.now() + TEN_DAYS_MS;
   if (!Array.isArray(db.recentBallots)) db.recentBallots = [];
   if (!db.devices) db.devices = {};
   if (!db.voters) db.voters = {};
@@ -80,7 +80,8 @@ async function refreshGlobalState() {
       body: JSON.stringify([
         ['GET', 'goat:votes:messi'],
         ['GET', 'goat:votes:ronaldo'],
-        ['LRANGE', 'goat:ballots', '0', '9']
+        ['LRANGE', 'goat:ballots', '0', '9'],
+        ['GET', 'goat:deadline']
       ]),
       signal: AbortSignal.timeout(2000)
     });
@@ -94,6 +95,11 @@ async function refreshGlobalState() {
         ballots = data[2].result.map(x => {
           try { return JSON.parse(x); } catch (_) { return null; }
         }).filter(Boolean);
+      }
+      const srvDeadline = +(data[3]?.result || 0);
+      if (srvDeadline > 0) {
+        db.deadlineMs = srvDeadline;
+        saveDb();
       }
       cachedGlobalState = {
         messi: Math.max(db.counts.messi, messi),
