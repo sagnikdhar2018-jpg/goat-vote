@@ -15,40 +15,92 @@ const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NA
 const DATA_FILE = isServerless ? path.join('/tmp', 'data.json') : path.join(__dirname, '..', 'data.json');
 const SECRET_FILE = isServerless ? path.join('/tmp', '.secret') : path.join(__dirname, '..', '.secret');
 
-// Secret handling with zero-crash fallback
-let secret = process.env.SECRET;
-if (!secret) {
-  try {
-    if (fs.existsSync(SECRET_FILE)) {
-      secret = fs.readFileSync(SECRET_FILE, 'utf8').trim();
-    } else {
-      secret = crypto.randomBytes(32).toString('hex');
-      try { fs.writeFileSync(SECRET_FILE, secret, { mode: 0o600 }); } catch (_) {}
-    }
-  } catch (_) {
-    secret = 'touchline-referendum-secure-salt-2026';
-  }
-}
-
+// Secret handling: consistent across all serverless containers and nodes
+const secret = process.env.SECRET || 'touchline-goat-referendum-permanent-salt-v1-2026';
 const hmac = s => crypto.createHmac('sha256', secret).update(s).digest('hex');
 
-// Persistence
+// Persistence Layer (Filesystem fallback)
 let db = { counts: { messi: 0, ronaldo: 0 }, voters: {}, deadlineMs: Date.now() + NINE_DAYS_MS };
-try {
-  if (fs.existsSync(DATA_FILE)) {
-    db = Object.assign(db, JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')));
-  }
-} catch (_) {}
-if (!db.deadlineMs) db.deadlineMs = Date.now() + NINE_DAYS_MS;
+
+function loadDb() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const parsed = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      if (parsed && parsed.counts) {
+        db.counts.messi = Math.max(db.counts.messi, Number(parsed.counts.messi) || 0);
+        db.counts.ronaldo = Math.max(db.counts.ronaldo, Number(parsed.counts.ronaldo) || 0);
+        if (parsed.voters) Object.assign(db.voters, parsed.voters);
+        if (parsed.deadlineMs) db.deadlineMs = parsed.deadlineMs;
+      }
+    }
+  } catch (_) {}
+  if (!db.deadlineMs) db.deadlineMs = Date.now() + NINE_DAYS_MS;
+  return db;
+}
+loadDb();
 
 function saveDb() {
   try {
-    fs.writeFile(DATA_FILE, JSON.stringify(db), () => {});
+    fs.writeFileSync(DATA_FILE, JSON.stringify(db));
   } catch (_) {}
 }
 
 function getDb() {
-  return db;
+  return loadDb();
+}
+
+// Vercel KV / Upstash Redis global persistent storage (zero-config if enabled in Vercel dashboard)
+const kvUrl = (process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || '').trim();
+const kvToken = (process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || '').trim();
+const hasKV = Boolean(kvUrl && kvToken);
+
+async function kvIncr(choice) {
+  if (!hasKV) return null;
+  try {
+    const res = await fetch(`${kvUrl.replace(/\/+$/, '')}/incr/goat:votes:${choice}`, {
+      headers: { Authorization: `Bearer ${kvToken}` }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return typeof data.result === 'number' ? data.result : null;
+    }
+  } catch (_) {}
+  return null;
+}
+
+async function kvSetVoter(ipKey) {
+  if (!hasKV) return;
+  try {
+    // 4 hour cooldown = 14400 seconds
+    await fetch(`${kvUrl.replace(/\/+$/, '')}/setex/goat:voters:${ipKey}/14400/1`, {
+      headers: { Authorization: `Bearer ${kvToken}` }
+    });
+  } catch (_) {}
+}
+
+async function getStateAsync(ipKey) {
+  if (hasKV) {
+    try {
+      const base = kvUrl.replace(/\/+$/, '');
+      const headers = { Authorization: `Bearer ${kvToken}` };
+      const [mRes, rRes, vRes] = await Promise.all([
+        fetch(`${base}/get/goat:votes:messi`, { headers }),
+        fetch(`${base}/get/goat:votes:ronaldo`, { headers }),
+        fetch(`${base}/ttl/goat:voters:${ipKey}`, { headers })
+      ]);
+      const [mData, rData, vData] = await Promise.all([mRes.json(), rRes.json(), vRes.json()]);
+      const m = Math.max(db.counts.messi, +(mData?.result || 0));
+      const r = Math.max(db.counts.ronaldo, +(rData?.result || 0));
+      const ttl = +(vData?.result || 0);
+      const cooldownMs = ttl > 0 ? ttl * 1000 : 0;
+      return { messi: m, ronaldo: r, cooldownMs, deadlineMs: db.deadlineMs };
+    } catch (_) {}
+  }
+
+  loadDb();
+  const last = db.voters[ipKey];
+  const left = last ? Math.max(0, COOLDOWN_MS - (Date.now() - last)) : 0;
+  return { ...db.counts, cooldownMs: left, deadlineMs: db.deadlineMs };
 }
 
 // IP normalization
@@ -164,5 +216,8 @@ module.exports = {
   checkToken,
   parseBody,
   send,
-  getState
+  getState,
+  getStateAsync,
+  kvIncr,
+  kvSetVoter
 };

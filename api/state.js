@@ -17,5 +17,6 @@ module.exports = async function handler(req, res) {
   }
 
   const ipKey = lib.hmac(ip);
-  return lib.send(res, 200, lib.getState(ipKey));
+  const st = await lib.getStateAsync(ipKey);
+  return lib.send(res, 200, st);
 };

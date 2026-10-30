@@ -15,19 +15,7 @@ const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NA
 const DATA_FILE = isServerless ? path.join('/tmp', 'data.json') : path.join(__dirname, 'data.json');
 const SECRET_FILE = isServerless ? path.join('/tmp', '.secret') : path.join(__dirname, '.secret');
 
-let secret = process.env.SECRET;
-if (!secret) {
-  try {
-    if (fs.existsSync(SECRET_FILE)) {
-      secret = fs.readFileSync(SECRET_FILE, 'utf8').trim();
-    } else {
-      secret = crypto.randomBytes(32).toString('hex');
-      try { fs.writeFileSync(SECRET_FILE, secret, { mode: 0o600 }); } catch (_) {}
-    }
-  } catch (_) {
-    secret = 'touchline-referendum-secure-salt-2026';
-  }
-}
+const secret = process.env.SECRET || 'touchline-goat-referendum-permanent-salt-v1-2026';
 const hmac = s => crypto.createHmac('sha256', secret).update(s).digest('hex');
 
 // ---------- persistence ----------

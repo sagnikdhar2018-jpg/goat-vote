@@ -1390,10 +1390,24 @@
                 const badgeEl = document.getElementById('backend-status-badge');
                 const textEl = document.getElementById('backend-status-text');
 
-                // 1. Check if Node server endpoint (/api/state) is running
+                // 1. Always restore verified local state first (cooldown & counts)
+                const local = getLocalState();
+                if (local) {
+                    if (typeof local.messi === 'number') vault.messiCount = Math.max(vault.messiCount, local.messi);
+                    if (typeof local.ronaldo === 'number') vault.ronaldoCount = Math.max(vault.ronaldoCount, local.ronaldo);
+                    if (local.lockedUntil && local.lockedUntil > Date.now()) {
+                        vault.lockedUntil = local.lockedUntil;
+                        vault.lockedCandidate = local.lockedCandidate;
+                    }
+                }
+                renderStandingsUI();
+                renderCooldownUI();
+                renderNineDayDeadlineClock();
+
+                // 2. Check if Node server endpoint (/api/state) is running
                 try {
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+                    const timeoutId = setTimeout(() => controller.abort(), 2500);
                     const res = await fetch('/api/state', { cache: 'no-store', signal: controller.signal });
                     clearTimeout(timeoutId);
 
@@ -1401,10 +1415,11 @@
                         const data = await res.json();
                         if (typeof data.messi === 'number' && typeof data.ronaldo === 'number') {
                             vault.backendType = 'node';
-                            vault.messiCount = data.messi;
-                            vault.ronaldoCount = data.ronaldo;
+                            vault.messiCount = Math.max(vault.messiCount, data.messi);
+                            vault.ronaldoCount = Math.max(vault.ronaldoCount, data.ronaldo);
                             if (data.cooldownMs && data.cooldownMs > 0) {
-                                vault.lockedUntil = Date.now() + data.cooldownMs;
+                                const srvLock = Date.now() + data.cooldownMs;
+                                if (srvLock > vault.lockedUntil) vault.lockedUntil = srvLock;
                             }
                             if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
                                 vault.pollDeadlineMs = data.deadlineMs;
@@ -1414,16 +1429,17 @@
                                 textEl.textContent = 'Node Server Synced';
                                 badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]';
                             }
+                            saveLocalState();
                             renderStandingsUI();
                             renderCooldownUI();
                             renderNineDayDeadlineClock();
-                            setInterval(pollNodeState, 6000);
+                            setInterval(pollNodeState, 4000);
                             return;
                         }
                     }
                 } catch (_) {}
 
-                // 2. Check if Firebase configuration is provided
+                // 3. Check if Firebase configuration is provided
                 if (typeof window.__firebase_config !== 'undefined' && window.__firebase_config) {
                     vault.backendType = 'firebase';
                     if (badgeEl && textEl) {
@@ -1434,14 +1450,8 @@
                     return;
                 }
 
-                // 3. Fallback to High-Integrity Local Ledger
+                // 4. Fallback to High-Integrity Local Ledger
                 vault.backendType = 'local';
-                const local = getLocalState();
-                vault.messiCount = local.messi || 0;
-                vault.ronaldoCount = local.ronaldo || 0;
-                vault.lockedUntil = local.lockedUntil || 0;
-                vault.lockedCandidate = local.lockedCandidate || null;
-
                 if (badgeEl && textEl) {
                     textEl.textContent = 'Verified Local Ledger';
                     badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30 font-semibold text-[11px]';
@@ -1458,17 +1468,29 @@
                     const res = await fetch('/api/state', { cache: 'no-store' });
                     if (res.ok) {
                         const data = await res.json();
-                        if (typeof data.messi === 'number') vault.messiCount = data.messi;
-                        if (typeof data.ronaldo === 'number') vault.ronaldoCount = data.ronaldo;
+                        let changed = false;
+                        if (typeof data.messi === 'number' && data.messi > vault.messiCount) {
+                            vault.messiCount = data.messi;
+                            changed = true;
+                        }
+                        if (typeof data.ronaldo === 'number' && data.ronaldo > vault.ronaldoCount) {
+                            vault.ronaldoCount = data.ronaldo;
+                            changed = true;
+                        }
                         if (data.cooldownMs && data.cooldownMs > 0) {
                             const newLock = Date.now() + data.cooldownMs;
-                            if (newLock > vault.lockedUntil) vault.lockedUntil = newLock;
+                            if (newLock > vault.lockedUntil) {
+                                vault.lockedUntil = newLock;
+                                changed = true;
+                            }
                         }
                         if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
                             vault.pollDeadlineMs = data.deadlineMs;
-                            try { localStorage.setItem(DEADLINE_KEY, String(data.deadlineMs)); } catch (_) {}
                         }
-                        renderStandingsUI();
+                        if (changed) {
+                            saveLocalState();
+                            renderStandingsUI();
+                        }
                         renderCooldownUI();
                     }
                 } catch (_) {}
@@ -1712,15 +1734,26 @@
                             throw new Error(voteData.error || 'Server rejected vote.');
                         }
 
-                        vault.messiCount = voteData.messi;
-                        vault.ronaldoCount = voteData.ronaldo;
-                        const cd = voteData.cooldownMs || COOLDOWN_MS;
+                        // Authoritative tally update with optimistic fallback
+                        if (typeof voteData.messi === 'number' && typeof voteData.ronaldo === 'number') {
+                            vault.messiCount = Math.max(vault.messiCount + (candidate === 'messi' ? 1 : 0), voteData.messi);
+                            vault.ronaldoCount = Math.max(vault.ronaldoCount + (candidate === 'ronaldo' ? 1 : 0), voteData.ronaldo);
+                        } else {
+                            if (candidate === 'messi') vault.messiCount++;
+                            if (candidate === 'ronaldo') vault.ronaldoCount++;
+                        }
+
+                        const cd = (voteData && voteData.cooldownMs) || COOLDOWN_MS;
                         vault.lockedUntil = now + cd;
                         vault.lockedCandidate = candidate;
                         if (typeof voteData.deadlineMs === 'number' && voteData.deadlineMs > 0) {
                             vault.pollDeadlineMs = voteData.deadlineMs;
                             try { localStorage.setItem(DEADLINE_KEY, String(voteData.deadlineMs)); } catch (_) {}
                         }
+
+                        // Persist immediately to localStorage & BroadcastChannel
+                        saveLocalState();
+                        broadcastState();
                     }
 
                     // MODE B: LOCAL / DECENTRALIZED ENGINE

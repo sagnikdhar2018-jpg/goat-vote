@@ -52,14 +52,27 @@ module.exports = async function handler(req, res) {
     return lib.send(res, 400, { error: 'Invalid choice.' });
   }
 
+  // Check cooldown from KV or local db
+  const currentSt = await lib.getStateAsync(ipKey);
+  if (currentSt.cooldownMs > 0) {
+    return lib.send(res, 429, { error: 'You already voted. Come back later.', ...currentSt });
+  }
+
   const last = db.voters[ipKey];
   if (last && Date.now() - last < lib.COOLDOWN_MS) {
-    return lib.send(res, 429, { error: 'You already voted. Come back later.', ...lib.getState(ipKey) });
+    return lib.send(res, 429, { error: 'You already voted. Come back later.', ...currentSt });
   }
 
   db.voters[ipKey] = Date.now();
-  db.counts[body.choice]++;
+  db.counts[body.choice] = (db.counts[body.choice] || 0) + 1;
   lib.saveDb();
 
-  return lib.send(res, 200, { ok: true, ...lib.getState(ipKey) });
+  // If KV is connected, atomically update KV
+  await Promise.all([
+    lib.kvIncr(body.choice),
+    lib.kvSetVoter(ipKey)
+  ]);
+
+  const finalSt = await lib.getStateAsync(ipKey);
+  return lib.send(res, 200, { ok: true, ...finalSt });
 };
