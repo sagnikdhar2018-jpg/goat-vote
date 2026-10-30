@@ -23,8 +23,8 @@ module.exports = async function handler(req, res) {
     return lib.send(res, 429, { error: 'Too many vote attempts. Try later.' });
   }
 
-  if (!lib.allow('gv', 200, 60e3)) {
-    return lib.send(res, 429, { error: 'Server is busy. Try again shortly.' });
+  if (!lib.allow('gv', 3000, 60e3)) {
+    return lib.send(res, 429, { error: 'Server is receiving extraordinary traffic. Please try again in a few seconds.' });
   }
 
   const ua = req.headers['user-agent'] || '';

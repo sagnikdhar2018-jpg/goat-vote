@@ -1923,9 +1923,21 @@
                 vault.backendType = 'node';
                 await pollNodeState();
 
-                // 3. Keep live server synchronization running permanently every 2.5 seconds
+                // 3. High-concurrency adaptive synchronization with jitter & background tab backoff
+                function schedulePoll(delayMs) {
+                    if (vault.syncTimer) clearTimeout(vault.syncTimer);
+                    vault.syncTimer = setTimeout(async () => {
+                        await pollNodeState();
+                        const nextDelay = document.hidden ? 15000 : (2800 + Math.floor(Math.random() * 600));
+                        schedulePoll(nextDelay);
+                    }, delayMs);
+                }
+
                 if (!vault.syncTimer) {
-                    vault.syncTimer = setInterval(pollNodeState, 2500);
+                    schedulePoll(3000);
+                    document.addEventListener('visibilitychange', () => {
+                        if (!document.hidden) schedulePoll(200);
+                    });
                 }
             }
 
