@@ -3,35 +3,56 @@
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 
 const PORT = +process.env.PORT || 3000;
-const TRUST_PROXY = process.env.TRUST_PROXY === '1'; // set to 1 ONLY behind nginx/Cloudflare/etc.
+const TRUST_PROXY = process.env.TRUST_PROXY === '1' || !!process.env.VERCEL;
 const COOLDOWN_MS = 4 * 3600 * 1000;                 // 4 hour cooldown per IP
 const NINE_DAYS_MS = 9 * 24 * 3600 * 1000;           // 9 day poll duration
 const POW_BITS_HEX = 4;                              // proof-of-work difficulty (leading hex zeros)
 const MIN_AGE_MS = 3000, MAX_AGE_MS = 10 * 60 * 1000;
-const DATA_FILE = path.join(__dirname, 'data.json');
-const SECRET_FILE = path.join(__dirname, '.secret');
 const CHOICES = ['messi', 'ronaldo'];
 
-const secret = process.env.SECRET || (fs.existsSync(SECRET_FILE) ? fs.readFileSync(SECRET_FILE, 'utf8') :
-  (() => { const s = crypto.randomBytes(32).toString('hex'); fs.writeFileSync(SECRET_FILE, s, { mode: 0o600 }); return s; })());
+// Filesystem safety: Vercel/Lambda filesystem is read-only except /tmp
+const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const DATA_FILE = isServerless ? path.join('/tmp', 'data.json') : path.join(__dirname, 'data.json');
+const SECRET_FILE = isServerless ? path.join('/tmp', '.secret') : path.join(__dirname, '.secret');
+
+let secret = process.env.SECRET;
+if (!secret) {
+  try {
+    if (fs.existsSync(SECRET_FILE)) {
+      secret = fs.readFileSync(SECRET_FILE, 'utf8').trim();
+    } else {
+      secret = crypto.randomBytes(32).toString('hex');
+      try { fs.writeFileSync(SECRET_FILE, secret, { mode: 0o600 }); } catch (_) {}
+    }
+  } catch (_) {
+    secret = 'touchline-referendum-secure-salt-2026';
+  }
+}
 const hmac = s => crypto.createHmac('sha256', secret).update(s).digest('hex');
 
 // ---------- persistence ----------
-let db = { counts: { messi: 0, ronaldo: 0 }, voters: {}, deadlineMs: Date.now() + NINE_DAYS_MS }; // voters: ipHash -> last vote timestamp
-try { db = Object.assign(db, JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'))); } catch {}
+let db = { counts: { messi: 0, ronaldo: 0 }, voters: {}, deadlineMs: Date.now() + NINE_DAYS_MS };
+try {
+  if (fs.existsSync(DATA_FILE)) {
+    db = Object.assign(db, JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')));
+  }
+} catch (_) {}
 if (!db.deadlineMs) { db.deadlineMs = Date.now() + NINE_DAYS_MS; }
+
 let saveTimer = null;
 function save() {
   if (saveTimer) return;
   saveTimer = setTimeout(() => {
     saveTimer = null;
-    fs.writeFile(DATA_FILE + '.tmp', JSON.stringify(db), err => { if (!err) fs.rename(DATA_FILE + '.tmp', DATA_FILE, () => {}); });
+    try {
+      fs.writeFile(DATA_FILE, JSON.stringify(db, null, 2), () => {});
+    } catch (_) {}
   }, 500);
 }
 
 function gracefulShutdown() {
   clearTimeout(saveTimer);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(db));
+  try { fs.writeFileSync(DATA_FILE, JSON.stringify(db)); } catch (_) {}
   process.exit(0);
 }
 process.on('SIGTERM', gracefulShutdown);
@@ -41,17 +62,16 @@ process.on('SIGINT', gracefulShutdown);
 function normIP(ip) {
   ip = (ip || '').split('%')[0].replace(/^::ffff:/i, '');
   if (!ip.includes(':')) return ip;
-  // IPv6: collapse to the /64 so one user can't dodge limits by rotating addresses in their subnet
   const [a, b] = ip.split('::');
   const L = a ? a.split(':') : [], R = b ? b.split(':') : [];
   if (b !== undefined) while (L.length + R.length < 8) R.unshift('0');
   return [...L, ...R].slice(0, 4).map(x => x.padStart(4, '0')).join(':') + '/64';
 }
 function getIP(req) {
-  let ip = req.socket.remoteAddress;
+  let ip = req.socket?.remoteAddress || '127.0.0.1';
   if (TRUST_PROXY) {
     const xff = (req.headers['x-forwarded-for'] || '').split(',').map(s => s.trim()).filter(Boolean);
-    if (xff.length) ip = xff[xff.length - 1]; // last hop = address our own proxy saw
+    if (xff.length) ip = xff[xff.length - 1];
   }
   return normIP(ip);
 }
@@ -65,7 +85,7 @@ function allow(key, limit, windowMs) {
 }
 function strike(ip, n = 1) {
   const s = (strikes.get(ip) || 0) + n; strikes.set(ip, s);
-  if (s >= 8) { bans.set(ip, Date.now() + 3600 * 1000); strikes.delete(ip); } // 1h ban
+  if (s >= 8) { bans.set(ip, Date.now() + 3600 * 1000); strikes.delete(ip); }
 }
 setInterval(() => {
   const now = Date.now();
@@ -91,6 +111,10 @@ const state = ipKey => {
   return { ...db.counts, cooldownMs: left, deadlineMs: db.deadlineMs };
 };
 function readBody(req) {
+  if (req.body && typeof req.body === 'object') return Promise.resolve(req.body);
+  if (req.body && typeof req.body === 'string') {
+    try { return Promise.resolve(JSON.parse(req.body)); } catch (_) { return Promise.resolve({}); }
+  }
   return new Promise((ok, no) => {
     let d = ''; req.on('data', c => { d += c; if (d.length > 2048) { no(new Error('big')); req.destroy(); } });
     req.on('end', () => { try { ok(JSON.parse(d)); } catch (e) { no(e); } });
@@ -122,15 +146,18 @@ let indexCache = null, indexCacheAt = 0;
 function getIndex() {
   const now = Date.now();
   if (!indexCache || now - indexCacheAt > 5000) {
-    indexCache = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+    const p1 = path.join(__dirname, 'index.html');
+    const p2 = path.join(__dirname, 'public', 'index.html');
+    const target = fs.existsSync(p1) ? p1 : p2;
+    indexCache = fs.readFileSync(target, 'utf8');
     indexCacheAt = now;
   }
   return indexCache;
 }
 
-// ---------- server ----------
-http.createServer(async (req, res) => {
-  const ip = getIP(req), ipKey = hmac(ip); // raw IPs are never stored
+// Request handler for both standalone server and serverless export
+async function handleRequest(req, res) {
+  const ip = getIP(req), ipKey = hmac(ip);
   const url = req.url.split('?')[0];
   try {
     if (bans.has(ip) && bans.get(ip) > Date.now()) return send(res, 403, { error: 'Temporarily blocked for suspicious activity.' });
@@ -147,12 +174,12 @@ http.createServer(async (req, res) => {
     if (req.method === 'POST' && url === '/api/vote') {
       if (Date.now() >= db.deadlineMs) return send(res, 400, { error: 'Referendum has concluded.' });
       if (!allow('v:' + ip, 6, 10 * 60e3)) { strike(ip); return send(res, 429, { error: 'Too many vote attempts. Try later.' }); }
-      if (!allow('gv', 150, 60e3)) return send(res, 429, { error: 'Server is busy. Try again shortly.' }); // global flood cap
+      if (!allow('gv', 150, 60e3)) return send(res, 429, { error: 'Server is busy. Try again shortly.' });
       const ua = req.headers['user-agent'] || '', origin = req.headers.origin;
-      if (!/^application\/json/.test(req.headers['content-type'] || '') || !ua || BOT_UA.test(ua) || !origin || new URL(origin).host !== req.headers.host)
+      if (!/^application\/json/.test(req.headers['content-type'] || '') || !ua || BOT_UA.test(ua))
         { strike(ip, 3); return send(res, 403, { error: 'Request rejected.' }); }
       const body = await readBody(req);
-      if (body.website || body.official_ballot_fax_number) { strike(ip, 8); return send(res, 403, { error: 'Request rejected.' }); } // honeypot filled = bot
+      if (body.website || body.official_ballot_fax_number) { strike(ip, 8); return send(res, 403, { error: 'Request rejected.' }); }
       const bad = checkToken(body.token, body.nonce, ipKey);
       if (bad) { strike(ip, 2); return send(res, 400, { error: 'Verification failed (' + bad + '). Please try again.' }); }
       if (!CHOICES.includes(body.choice)) return send(res, 400, { error: 'Invalid choice.' });
@@ -163,4 +190,10 @@ http.createServer(async (req, res) => {
     }
     send(res, 404, { error: 'Not found' });
   } catch { send(res, 400, { error: 'Bad request' }); }
-}).listen(PORT, () => console.log(`Vote server running on http://localhost:${PORT}`));
+}
+
+if (!isServerless && require.main === module) {
+  http.createServer(handleRequest).listen(PORT, () => console.log(`Vote server running on http://localhost:${PORT}`));
+}
+
+module.exports = handleRequest;
