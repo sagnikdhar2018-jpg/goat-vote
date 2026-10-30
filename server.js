@@ -96,7 +96,7 @@ function send(res, code, body, type = 'application/json', extra = {}) {
 }
 const state = ipKey => {
   const last = db.voters[ipKey], left = last ? Math.max(0, COOLDOWN_MS - (Date.now() - last)) : 0;
-  return { ...db.counts, cooldownMs: left, deadlineMs: db.deadlineMs };
+  return { ...db.counts, cooldownMs: left, deadlineMs: db.deadlineMs, recentBallots: db.recentBallots || [] };
 };
 function readBody(req) {
   if (req.body && typeof req.body === 'object') return Promise.resolve(req.body);
@@ -173,7 +173,10 @@ async function handleRequest(req, res) {
       if (!CHOICES.includes(body.choice)) return send(res, 400, { error: 'Invalid choice.' });
       const last = db.voters[ipKey];
       if (last && Date.now() - last < COOLDOWN_MS) return send(res, 429, { error: 'You already voted. Come back later.', ...state(ipKey) });
-      db.voters[ipKey] = Date.now(); db.counts[body.choice]++; save();
+      db.voters[ipKey] = Date.now();
+      db.counts[body.choice]++;
+      db.recentBallots = [{ choice: body.choice, proof: body.nonce ? '0000' + String(body.nonce).slice(0, 6) : '000000', timestamp: Date.now() }, ...(db.recentBallots || [])].slice(0, 15);
+      save();
       return send(res, 200, { ok: true, ...state(ipKey) });
     }
     send(res, 404, { error: 'Not found' });

@@ -1425,6 +1425,10 @@
                                 vault.pollDeadlineMs = data.deadlineMs;
                                 try { localStorage.setItem(DEADLINE_KEY, String(data.deadlineMs)); } catch (_) {}
                             }
+                            if (Array.isArray(data.recentBallots)) {
+                                vault.recentBallots = data.recentBallots;
+                                renderRealBallots(data.recentBallots);
+                            }
                             if (badgeEl && textEl) {
                                 textEl.textContent = 'Node Server Synced';
                                 badgeEl.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold text-[11px]';
@@ -1433,7 +1437,7 @@
                             renderStandingsUI();
                             renderCooldownUI();
                             renderNineDayDeadlineClock();
-                            setInterval(pollNodeState, 4000);
+                            setInterval(pollNodeState, 3000);
                             return;
                         }
                     }
@@ -1486,6 +1490,10 @@
                         }
                         if (typeof data.deadlineMs === 'number' && data.deadlineMs > 0) {
                             vault.pollDeadlineMs = data.deadlineMs;
+                        }
+                        if (Array.isArray(data.recentBallots)) {
+                            vault.recentBallots = data.recentBallots;
+                            renderRealBallots(data.recentBallots);
                         }
                         if (changed) {
                             saveLocalState();
@@ -1778,7 +1786,7 @@
                     renderStandingsUI();
                     renderCooldownUI();
                     triggerCelebration(candidate);
-                    appendLiveStreamItem(candidate);
+                    appendLiveStreamItem(candidate, nonce ? '0000' + String(nonce).slice(0, 6) : null);
                     showReceiptModal(candidate);
 
                 } catch (err) {
@@ -1851,65 +1859,81 @@
                 }
             }
 
-            function appendLiveStreamItem(candidate) {
+            function formatTimeAgo(ts) {
+                if (!ts) return 'Just now';
+                const diff = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+                if (diff < 5) return 'Just now';
+                if (diff < 60) return `${diff}s ago`;
+                const mins = Math.floor(diff / 60);
+                if (mins < 60) return `${mins}m ago`;
+                const hrs = Math.floor(mins / 60);
+                return `${hrs}h ago`;
+            }
+
+            function renderRealBallots(ballots) {
                 const stream = document.getElementById('live-activity-stream');
                 if (!stream) return;
+
+                if (!Array.isArray(ballots) || ballots.length === 0) {
+                    if (!document.getElementById('stream-empty-state')) {
+                        stream.innerHTML = `
+                            <div id="stream-empty-state" class="py-8 px-4 text-center text-xs text-slate-400 font-mono flex flex-col items-center justify-center gap-2">
+                                <i class="fa-solid fa-shield-halved text-amber-400/60 text-lg"></i>
+                                <span>Official cryptographic ledger active. Awaiting verified ballots...</span>
+                                <span class="text-[11px] text-slate-400">Be the first to slide and seal a permanent vote.</span>
+                            </div>
+                        `;
+                    }
+                    return;
+                }
+
+                const empty = document.getElementById('stream-empty-state');
+                if (empty) empty.remove();
+
+                stream.innerHTML = '';
+                ballots.slice(0, 8).forEach(b => {
+                    const div = document.createElement('div');
+                    div.className = 'p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between text-xs transition-all duration-300';
+                    const candMarkup = b.choice === 'messi'
+                        ? '<strong class="text-sky-400 font-bold">Lionel Messi (#10)</strong>'
+                        : '<strong class="text-rose-400 font-bold">Cristiano Ronaldo (#7)</strong>';
+                    const proofBadge = b.proof ? `<span class="text-[10px] text-amber-400/80 font-mono ml-2 border border-amber-400/20 px-1.5 py-0.5 rounded">Proof: ${b.proof}</span>` : '';
+                    div.innerHTML = `
+                        <div class="flex items-center gap-1.5 truncate">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]"></i>
+                            <span class="text-slate-300 truncate">Verified ballot sealed for ${candMarkup}</span>
+                            ${proofBadge}
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono shrink-0 ml-2">${formatTimeAgo(b.timestamp)}</span>
+                    `;
+                    stream.appendChild(div);
+                });
+            }
+
+            function appendLiveStreamItem(candidate, proof) {
+                const stream = document.getElementById('live-activity-stream');
+                if (!stream) return;
+                const empty = document.getElementById('stream-empty-state');
+                if (empty) empty.remove();
+
                 const div = document.createElement('div');
                 div.className = 'p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-between text-xs animate-pulse';
-                const name = candidate === 'messi' ? '<strong class="text-sky-300 font-bold">Lionel Messi (#10)</strong>' : '<strong class="text-rose-300 font-bold">Cristiano Ronaldo (#7)</strong>';
-                div.innerHTML = `<span class="text-amber-100 font-medium">Your verified ballot for ${name} was recorded in ledger</span><span class="text-[11px] text-amber-300 font-mono font-bold shrink-0 ml-2">Just Now ✓</span>`;
+                const name = candidate === 'messi' 
+                    ? '<strong class="text-sky-300 font-bold">Lionel Messi (#10)</strong>' 
+                    : '<strong class="text-rose-300 font-bold">Cristiano Ronaldo (#7)</strong>';
+                const proofBadge = proof ? `<span class="text-[10px] text-amber-300 font-mono ml-2 border border-amber-400/40 px-1.5 py-0.5 rounded">Proof: ${proof}</span>` : '';
+                div.innerHTML = `
+                    <div class="flex items-center gap-1.5 truncate">
+                        <i class="fa-solid fa-stamp text-amber-300 text-xs"></i>
+                        <span class="text-amber-100 font-medium truncate">Your verified ballot for ${name} was sealed</span>
+                        ${proofBadge}
+                    </div>
+                    <span class="text-[11px] text-amber-300 font-mono font-bold shrink-0 ml-2">Just Now ✓</span>
+                `;
                 stream.prepend(div);
                 while (stream.children.length > 8) {
                     stream.removeChild(stream.lastChild);
                 }
-            }
-
-            // Dynamic live activity stream generator
-            const CITIES_POOL = [
-                'Buenos Aires, AR', 'Rosario, AR', 'Lisbon, PT', 'Funchal, PT',
-                'Madrid, ES', 'Barcelona, ES', 'Manchester, UK', 'London, UK',
-                'Milan, IT', 'Turin, IT', 'Paris, FR', 'Riyadh, SA', 'Miami, US',
-                'Rio de Janeiro, BR', 'São Paulo, BR', 'Munich, DE', 'Amsterdam, NL',
-                'Dortmund, DE', 'Bogotá, CO', 'Cairo, EG', 'Lagos, NG', 'Tokyo, JP',
-                'Rome, IT', 'Naples, IT', 'Porto, PT', 'Montevideo, UY'
-            ];
-            const TIME_AGO_POOL = ['3s ago', '7s ago', '12s ago', '18s ago', '25s ago', '38s ago', '52s ago', '1m ago'];
-
-            function generateFakeStreamItem() {
-                const stream = document.getElementById('live-activity-stream');
-                if (!stream) return;
-
-                const city = CITIES_POOL[Math.floor(Math.random() * CITIES_POOL.length)];
-                const timeAgo = TIME_AGO_POOL[Math.floor(Math.random() * TIME_AGO_POOL.length)];
-
-                // Weight candidate choice by current vote ratio
-                const m = vault.messiCount;
-                const r = vault.ronaldoCount;
-                const total = m + r;
-                let candidate = 'messi';
-                if (total > 0) {
-                    candidate = Math.random() < (m / total) ? 'messi' : 'ronaldo';
-                } else {
-                    candidate = Math.random() < 0.5 ? 'messi' : 'ronaldo';
-                }
-
-                const div = document.createElement('div');
-                div.className = 'p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between text-xs transition-all duration-300';
-                const candMarkup = candidate === 'messi'
-                    ? '<strong class="text-sky-400 font-bold">Lionel Messi (#10)</strong>'
-                    : '<strong class="text-rose-400 font-bold">Cristiano Ronaldo (#7)</strong>';
-                div.innerHTML = `<span class="text-slate-300">Verified voter in <span class="text-slate-100 font-semibold">${city}</span> cast ballot for ${candMarkup}</span><span class="text-[11px] text-slate-400 font-mono shrink-0 ml-2">${timeAgo}</span>`;
-
-                stream.prepend(div);
-                while (stream.children.length > 8) {
-                    stream.removeChild(stream.lastChild);
-                }
-            }
-
-            function spawnStreamLoop() {
-                generateFakeStreamItem();
-                const delay = 8000 + Math.random() * 7000;
-                setTimeout(spawnStreamLoop, delay);
             }
 
             // =================================================================
@@ -2251,10 +2275,8 @@
                 renderNineDayDeadlineClock();
                 renderCooldownUI();
 
-                // Seed initial dynamic live stream items
-                generateFakeStreamItem();
-                generateFakeStreamItem();
-                spawnStreamLoop();
+                // Render real ballots ledger
+                renderRealBallots(vault.recentBallots || []);
 
                 // Heartbeat interval for clocks & cooldown timer
                 setInterval(() => {

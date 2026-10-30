@@ -65,10 +65,12 @@ module.exports = async function handler(req, res) {
 
   db.voters[ipKey] = Date.now();
   db.counts[body.choice] = (db.counts[body.choice] || 0) + 1;
+  lib.recordBallot(body.choice, body.nonce);
   lib.saveDb();
 
-  // If KV is connected, atomically update KV
+  // Atomically update cloud persistent counter and KV
   await Promise.all([
+    lib.cloudIncr(body.choice),
     lib.kvIncr(body.choice),
     lib.kvSetVoter(ipKey)
   ]);
